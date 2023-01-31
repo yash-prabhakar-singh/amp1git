@@ -1,8 +1,11 @@
-import { Box, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
+import { Box, Hidden, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
 import * as React from 'react';
 import axios from 'axios';
 import api from './api';
 import { DataGrid } from '@mui/x-data-grid';
+import { ClassNames } from '@emotion/react';
+import { FormatColorTextSharp } from '@mui/icons-material';
+
 
 
 
@@ -57,9 +60,19 @@ const columns = [
 //const handleChange = (event) => {
     //setValue(event.target.value);
  // };
+
+ // Changes below 
+
+ const responsivePaper = {
+  border: "1px solid gray",
+  margin: 1,
+  flex: { xs: "100%", sm: "calc(50% - 20px)", md: "calc(33% - 20px)" },
+  overflow: 'hidden'
+
+};
     return (
     
-    <Box sx={{}}>
+    <Box sx={{ width:"100%" }}>
       <Stack direction='column' alignItems='flex-start' spacing={2.5}>
         <Typography alignSelf='left' fontWeight='bold' color='text.primary' >
             Scheduled Bids
@@ -102,8 +115,10 @@ const columns = [
           </TableBody>
         </Table>
             </TableContainer>*/}
-            <Box sx={{maxHeight: 400, width: '100%'}} >
-      <DataGrid autoHeight sx={{ width: '100%'}}
+
+
+            <Box sx={{display:"flex", flexWrap: "wrap",  maxHeight: 400, width: '100%'}} >
+      <DataGrid autoHeight sx={responsivePaper}
         rows={rows}
         columns={columns}
         pageSize={psize}
@@ -115,4 +130,13 @@ const columns = [
       /></Box>
     
             </Stack></Box>)}
+
+
+
+      
+
+
+
+
+
 

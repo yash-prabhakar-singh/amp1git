@@ -20,6 +20,9 @@ import { useState } from 'react';
 import DTable from './ScheduledTable';
 import ScheduledTable from './ScheduledTable';
 import PlacedTable from './PlacedTable';
+import BiddingListM from '../MobileComponent/BiddingListM';
+import useMediaQuery from '@mui/material/useMediaQuery';
+
 //import { TabContext, TabList, TabPanel } from '@mui/lab';
 
 
@@ -27,6 +30,8 @@ import PlacedTable from './PlacedTable';
 export default function BiddingList() {
 
   let [rows,setRows]= React.useState([]);
+
+  const isMobile = useMediaQuery('(max-width:600px)');
 
  
 
@@ -53,12 +58,27 @@ export default function BiddingList() {
     }
     }
     );
+    const responsivePaper = {
+      border: "1px solid gray",
+      margin: 1,
+      flex: { xs: "100%", sm: "calc(50% - 20px)", md: "calc(33% - 20px)" }
+    
+    };
+
+    const Mobile=()=>{return(
+      <BiddingListM />
+    )}
+
+    if(isMobile)
+    return(<Mobile/>);
+  
+    
 
     
 
   return (
     
-    <Stack direction='column'  sx={{width:'100%'}} spacing={3}>
+    <Stack direction='column'  sx={{responsivePaper}} spacing={3}>
     <ScheduledTable/>
     <PlacedTable />
       </Stack>

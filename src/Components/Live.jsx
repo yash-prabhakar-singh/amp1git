@@ -115,7 +115,7 @@ export default function Live() {
             Live
         </Typography>
 <Button variant="contained" sx={{ fontSize:12, paddingTop:0.1,paddingBottom:0.1,borderRadius:0.2,height:30}} onClick={()=>{api.startLive().then(res=>console.log(res.data)).catch((err)=>console.log(err.data));}}>Start Live</Button>
-      <Box sx={{maxHeight: 400, width: 700}} >
+      <Box sx={{display: 'flex', width: "100%", flexWrap: 'wrap'}} >
       <DataGrid autoHeight sx={{ width: '100%'}}
         rows={rows}
         columns={columns}

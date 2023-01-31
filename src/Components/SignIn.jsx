@@ -152,7 +152,7 @@ const [password, setPassword]= useState("");
 
   return (
     <ThemeProvider theme={theme}>
-      <Box>
+      <Box sx={{display:'flex',flex:1, height:'100%',width:'100%',justifyContent: 'center'}}>
 <CssBaseline />
     <Box height='100vh'>
       
@@ -251,3 +251,6 @@ const [password, setPassword]= useState("");
 };
 
 export default SignInSide;
+
+
+

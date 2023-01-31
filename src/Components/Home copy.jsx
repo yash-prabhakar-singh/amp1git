@@ -19,7 +19,10 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import api from './api';
 import Mbid from './MultipleBid';
-//import { TabContext, TabList, TabPanel } from '@mui/lab';
+// import { TabContext, TabList, TabPanel } from '@material-ui/core
+// import useMediaQuery from '@mui/material/useMediaQuery';
+// import BulkBidM from '../MobileComponent/BulkBidM';
+
 
 
 
@@ -64,12 +67,24 @@ export default function Home1() {
     setValue(event.target.value);
   };
 
+  // const isMobile = useMediaQuery('(max-width:600px)');
+
   const [checked, setChecked] = useState(false);
 
   const switchHandler = (event) => {
     setChecked(event.target.checked);
     console.log(checked)
   };
+
+
+  // const Mobile=()=>{return(
+  //   <BulkBidM/>
+  // )}
+  // <Typography>Bulk Bid is being designed</Typography>
+
+  // if(isMobile)
+  // return(<Mobile/>);
+
 
   return (
     <ThemeProvider theme={theme}><Box sx={{backgroundColor:'white', height:'100vh'}}>

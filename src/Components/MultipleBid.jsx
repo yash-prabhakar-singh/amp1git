@@ -19,6 +19,9 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import api from './api';
 //import { TabContext, TabList, TabPanel } from '@mui/lab';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import MultipleBidM from '../MobileComponent/MultipleBidM';
+
 
 
 
@@ -67,12 +70,22 @@ export default function Mbid() {
     setValue(event.target.value);
   };
 
+  const isMobile = useMediaQuery('(max-width:600px)');
+
   const [checked, setChecked] = useState(false);
 
   const switchHandler = (event) => {
     setChecked(event.target.checked);
     console.log(checked)
   };
+
+  const Mobile=()=>{return(
+    <MultipleBidM />
+  )}
+
+  if(isMobile)
+  return(<Mobile/>);
+
 
   return (
     

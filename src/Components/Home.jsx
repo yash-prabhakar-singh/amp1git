@@ -18,7 +18,11 @@ import { createTheme, ThemeProvider } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import api from './api';
-//import { TabContext, TabList, TabPanel } from '@mui/lab';
+// import { TabContext, TabList, TabPanel } from '@mui/lab';
+// import useMediaQuery from '@mui/material/useMediaQuery';
+// import BulkBidM from '../MobileComponent/BulkBidM';
+
+
 
 
 
@@ -63,6 +67,9 @@ export default function Home() {
     setValue(event.target.value);
   };
 
+  // const isMobile = useMediaQuery('(max-width:600px)');
+
+
   const [checked, setChecked] = useState(false);
 
   const switchHandler = (event) => {
@@ -70,8 +77,26 @@ export default function Home() {
     console.log(checked)
   };
 
+  // changes made here
+  
+ const responsivePaper = {
+    border: "1px solid gray",
+    margin: 1,
+    flex: { xs: "100%", sm: "calc(50% - 20px)", md: "calc(33% - 20px)" }
+  
+  };
+
+  // const Mobile=()=>{return(
+  //   <BulkBidM/>
+  // )}
+  // <Typography>Bulk Bid is being designed</Typography>
+
+  // if(isMobile)
+  // return(<Mobile/>);
+
+
   return (
-    <ThemeProvider theme={theme}><Box sx={{backgroundColor:'white', height:'100vh'}}>
+    <ThemeProvider theme={theme}><Box sx={ {display: "flex", flexWrap: "wrap" }}>
       <CssBaseline/>
     <Stack direction='row' paddingTop={4.5} justifyContent='center' spacing={16} sx={{}}>
 <Sidebar/>
@@ -81,7 +106,7 @@ export default function Home() {
             Bulk Bid
         </Typography></Stack>
         <Stack spacing={2.5} >
-    <Box sx={{ width:150 }}>
+    <Box sx={{responsivePaper}}>
       <Stack alignItems='flex-start' spacing={1.5}>
       <Typography color="text.secondary">
           Choose Platform:
@@ -171,3 +196,4 @@ export default function Home() {
     
   );
 }
+

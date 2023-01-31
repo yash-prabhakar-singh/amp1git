@@ -11,8 +11,16 @@ import * as React from 'react';
 import { useEffect } from 'react';
 import api from './api';
 import { DataGrid } from '@mui/x-data-grid';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import WatchlistM from '../MobileComponent/WatchlistM';
 
 export default function WatchList() {
+  const responsivePaper = {
+    border: "1px solid gray",
+    margin: 1,
+    flex: { xs: "100%", sm: "calc(50% - 20px)", md: "calc(33% - 20px)" }
+  
+  };
 
     let [rows,setRows]= React.useState([]);
     let [psize,setPsize]= React.useState(10);
@@ -58,6 +66,8 @@ export default function WatchList() {
     },
    
   ];
+
+  const isMobile = useMediaQuery('(max-width:600px)');
   
     const theme = createTheme({
       palette: {
@@ -82,8 +92,14 @@ export default function WatchList() {
       }
       }
       );
+
+      const Mobile=()=>{return(
+        <WatchlistM />
+      )}
   
-      
+      if(isMobile)
+      return(<Mobile/>);
+  
   
     return (
     
@@ -91,9 +107,8 @@ export default function WatchList() {
       <Typography alignSelf='left' fontWeight='bold' color='text.primary' >
             Watchlist
         </Typography>
-
-      <Box sx={{maxHeight: 400, width: 925}} >
-      <DataGrid autoHeight sx={{ width: '100%'}}
+      <Box sx={{display: 'flex', width: '100%', flexWrap: 'wrap'}} >
+      <DataGrid autoHeight sx={ responsivePaper}
         rows={rows}
         columns={columns}
         pageSize={psize}
