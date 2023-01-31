@@ -47,7 +47,7 @@ const columns = [
 
     const [rows, setRows] = React.useState([]);
     const [cbid, setCbid] = React.useState("");
-React.useEffect(()=>{api.getcompletedauctions().then((response)=>{setRows(response.data)}).catch((Error)=>console.log(Error))});
+React.useEffect(()=>{api.getcompletedauctions().then((response)=>{setRows(response.data)}).catch((Error)=>console.log(Error))},[]);
   //const handleChange = (event) => {
     //setValue(event.target.value);
  // };

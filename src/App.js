@@ -18,7 +18,14 @@ import Proside from './Components/ProSidebar';
 import Home1 from './Components/Home copy';
 import Mbid from './Components/MultipleBid';
 import Bulkf from './Components/BulkFetch copy';
-import Live from './Components/Live';
+import Live from './Components/DynadotLive';
+import Bulkfetchcloseout from './Components/BulkFetchCloseouts';
+import Mcloseouts from './Components/Multiplecloseoutsbuy';
+import NamecheapLive from './Components/NamecheapLive';
+import CloseoutList from './Components/CloseoutList';
+import CloseoutsReport from './Components/CloseoutsReport';
+import Bulkfgdv from './Components/BulkFetchGDV';
+import AuthenticatedRoute from './Components/AuthenticatedRoute';
 
 function App() {
   return (
@@ -30,14 +37,22 @@ function App() {
      <Route path="/" exact element={<SignInSide/>}/>
      <Route path="/login" exact element={<SignInSide/>}/>
      <Route path="/home1" exact element={<Home/>}/>
-     <Route path="/home" element={<Home1/>}>
+     <Route path="/home" element={<AuthenticatedRoute><Home1/></AuthenticatedRoute>}>
      <Route index element={<Mbid />} />
      <Route path="bulkbid" element={<Mbid />} />
           <Route path="bulkfetch" element={<Bulkf />} />
+          <Route path="bulkfetchgdv" element={<Bulkfgdv />} />
+
+          <Route path="closeouts/bulkfetch" element={<Bulkfetchcloseout />} />
+          <Route path="closeouts/bulkbuy" element={<Mcloseouts />} />
           <Route path="biddinglist" element={<BiddingList/>}/>
+          <Route path="closeouts/closeoutlist" element={<CloseoutList/>}/>
+          <Route path="closeouts/report" element={<CloseoutsReport/>}/>
+
      <Route path="auctionsreport" element={<AuctionsReport/>}/>
      <Route path="sample" element={<Ssubmit/>}/>
-     <Route path="live" element={<Live/>}/>
+     <Route path="live/dynadot" element={<Live/>}/>
+     <Route path="live/namecheap" element={<NamecheapLive/>}/>
 
      <Route path="watchlist" element={<WatchList/>}/>
      <Route path="settings/preferences" element={<Preferences/>}/>

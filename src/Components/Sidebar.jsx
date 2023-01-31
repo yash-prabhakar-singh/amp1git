@@ -3,14 +3,19 @@
 import {
   AccountBox,
   Article,
+  AttachMoney,
   Bolt,
   CloseFullscreen,
   CloseRounded,
   FlipToBack,
   FourK,
+  GMobiledata,
   Group,
+  Hiking,
+  HikingSharp,
   Home,
   Key,
+  Language,
   Login,
   ModeNight,
   NotificationImportant,
@@ -74,7 +79,7 @@ const navigate= useNavigate();
 
   return (
     <ThemeProvider theme={theme}>
-    <Box sx={{ display: { xs: "none", sm: "block" } }}>
+    <Box sx={{ display: { xs: "block", sm: "block" } }}>
       <Box fontSize={16} sx={{}}>
 
         <List  sx={{
@@ -92,7 +97,79 @@ const navigate= useNavigate();
       }} disablePadding>
        
             <Stack direction='column' spacing={1}>
-            <ListItem disablePadding>
+            
+          <ListItem color="primary" disablePadding >
+          <Accordion sx={{width:212}}>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon/>}
+          aria-controls="panel1a-content"
+          id="panel1a-header"
+        >
+         
+         <LiveTvIcon sx={{color:'#1a1b1c'}} />
+         <Typography paddingLeft={0.5}>Live</Typography>
+        </AccordionSummary>
+        <AccordionDetails sx={{padding:0}}>
+          
+        <List sx={{color:'text.secondary'}} >
+            
+            <Stack direction='column' spacing={0} paddingLeft={1}>
+          <ListItem color="primary" disablePadding >
+           <ListItemButton  onClick={()=>navigate('/home/live/dynadot')}>
+           
+             
+                <SettingsAccessibility />
+              
+              <Typography paddingLeft={0.5} fontSize={16} fontFamily='Nunito'>Dynadot Live</Typography>
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding>
+            <ListItemButton onClick={()=>navigate('/home/live/namecheap')}  
+            >
+             
+                <Key />
+             
+              <Typography paddingLeft={0.5} fontSize={16} variant='h6'>Namecheap Live</Typography>
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding>
+            <ListItemButton onClick={()=>navigate('/home/live/dropcatch')}
+            >
+             
+              <Login />
+              
+              <Typography paddingLeft={0.5} fontSize={16} variant='h6'>Dropcatch Live</Typography>
+
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding>
+            <ListItemButton onClick={()=>navigate('/home/live/godaddy')}
+            >
+             
+              <GMobiledata />
+              
+              <Typography paddingLeft={0.5} fontSize={16} variant='h6'>GoDaddy Live</Typography>
+
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding>
+            <ListItemButton onClick={()=>navigate('/home/live/namesilo')}
+            >
+             
+              <Language />
+              
+              <Typography paddingLeft={0.5} fontSize={16} variant='h6'>Namesilo Live</Typography>
+
+            </ListItemButton>
+          </ListItem>
+          
+          </Stack>
+        </List>
+       
+        </AccordionDetails>
+      </Accordion>
+          </ListItem>
+            {/*<ListItem disablePadding>
           <Card sx={{width:212}}>
             <ListItemButton onClick={()=>navigate('/home/live')}  >
            
@@ -101,14 +178,14 @@ const navigate= useNavigate();
               <Typography paddingLeft={0.5}>Live</Typography>
             </ListItemButton>
             </Card>
-          </ListItem>
-            <ListItem disablePadding>
+          </ListItem>*/}
+          <ListItem disablePadding>
           <Card sx={{width:212}}>
-            <ListItemButton onClick={()=>navigate('/home/notifications')}  >
+            <ListItemButton onClick={()=>navigate('/home/bulkfetchgdv')}  >
            
-                <NotificationImportant sx={{color:'#1a1b1c'}} />
+                <AttachMoney sx={{color:'#1a1b1c'}} />
                 
-              <Typography paddingLeft={0.5}>Notifications</Typography>
+              <Typography paddingLeft={0.5}>Bulk Fetch GDV</Typography>
             </ListItemButton>
             </Card>
           </ListItem>
@@ -235,7 +312,7 @@ const navigate= useNavigate();
             
             <Stack direction='column' spacing={0} paddingLeft={1}>
           <ListItem color="primary" disablePadding >
-           <ListItemButton  onClick={()=>navigate('/settings/preferences')}>
+           <ListItemButton  onClick={()=>navigate('/home/closeouts/bulkfetch')}>
            
               
                 <SettingsAccessibility />
@@ -244,7 +321,7 @@ const navigate= useNavigate();
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton //onClick={()=>navigate('/home')}  
+            <ListItemButton onClick={()=>navigate('/home/closeouts/bulkbuy')}  
             >
              
                 <Key />
@@ -253,7 +330,17 @@ const navigate= useNavigate();
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton //onClick={()=>navigate('/currentbids')}
+            <ListItemButton onClick={()=>navigate('/home/closeouts/closeoutlist')}
+            >
+              
+              <Login />
+             
+              <Typography paddingLeft={0.5} fontSize={16} variant='h6'>Closeout List</Typography>
+
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding>
+            <ListItemButton onClick={()=>navigate('/closeouts/bulkbuy')}
             >
               
               <Login />
@@ -301,7 +388,7 @@ const navigate= useNavigate();
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton onClick={()=>navigate('/currentbids')}>
+            <ListItemButton onClick={()=>navigate('/home/closeouts/report')}>
              
               <Storefront />
               

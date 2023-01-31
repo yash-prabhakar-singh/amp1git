@@ -51,7 +51,7 @@ export default function PlacedTable() {
      
     ];
     
-React.useEffect(()=>{api.getplacedbids().then((response)=>{setRows(response.data);}).catch((Error)=>console.log(Error))});
+React.useEffect(()=>{api.getplacedbids().then((response)=>{setRows(response.data);}).catch((Error)=>console.log(Error))},[]);
   
 //React.useEffect(()=>{setCbid(rows.map(axios.get("https://api.dynadot.com/api3.json").then((response)=>{var a=JSON.parse(response.data); return a.Response.ResponseCode})))});
 

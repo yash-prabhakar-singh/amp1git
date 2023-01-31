@@ -22,7 +22,7 @@ import api from './api';
 
 
 
-export default function Mbid() {
+export default function Mcloseouts() {
 
   let [rows,setRows]= React.useState([]);
 
@@ -55,7 +55,8 @@ export default function Mbid() {
     const navigate = useNavigate();
     const [value, setValue] = React.useState('');
     const [list, setList] = React.useState([]);
-    const [plat,setPlat]= useState("Dynadot");
+    const [plat,setPlat]= useState("GoDaddy");
+    const [price,setPrice]= useState("5");
     const [bool,setBool]=useState(false);
     const [open,setOpen]=useState(false);
     const [open1,setOpen1]=useState(false);
@@ -80,25 +81,25 @@ export default function Mbid() {
     <Stack direction='row' justifyContent="flex-start">
     <Snackbar open={open} autoHideDuration={4000} anchorOrigin={{ vertical: "top", horizontal: "center" }} onClose={()=>{setOpen(false);}}>
         <Alert onClose={()=>{setOpen(false);}} severity="info" sx={{ width: '100%' }}>
-          Bid placed successfully for {res[0]}/{res[1]} domains.
+          Closeouts bought successfully for {res[0]}/{res[1]} domains.
         </Alert>
       </Snackbar>
       <Snackbar open={open1} anchorOrigin={{ vertical: "top", horizontal: "center" }} autoHideDuration={4000} onClose={()=>{setOpen1(false);}}>
         <Alert onClose={()=>{setOpen1(false);}} severity="info" sx={{ width: '100%' }}>
-         Bid scheduled successfully for {res[0]}/{res[1]} domains.
+         Closeouts scheduled successfully for {res[0]}/{res[1]} domains.
         </Alert>
       </Snackbar>
         <Typography alignSelf='left' fontWeight='bold' color='text.primary' >
-            Bulk Bid
+            Bulk Buy Closeouts
         </Typography></Stack>
         <Stack spacing={2.5} >
-    <Box sx={{ width:150 }}>
+    <Box sx={{ width:200 }}>
       <Stack alignItems='flex-start' spacing={1.5}>
       <Typography color="text.secondary">
-          Choose Platform:
+          Choose Platform And Price:
         </Typography>
       <FormControl fullWidth sx={{paddingLeft:0}}>
-       
+       <Stack direction="row" spacing={2.8}>
         <Select  sx={{height:40, '& legend': { display: 'none' },
     '& fieldset': { top: 0 }, color:'text.primary', fontWeight:'600',  padding: "0px 0px 0px 0px !important"}}
           labelId="demo-simple-select-label"
@@ -113,6 +114,25 @@ export default function Mbid() {
           <MenuItem value={"Dropcatch"}>Dropcatch</MenuItem>
           <MenuItem value={"Namecheap"}>Namecheap</MenuItem>
         </Select>
+
+        <Select  sx={{height:40, '& legend': { display: 'none' },
+    '& fieldset': { top: 0 }, color:'text.primary', fontWeight:'600',  padding: "0px 0px 0px 0px !important"}}
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+         // value={plat}
+          value={price}
+          label="Price"
+          
+          onChange={(event)=>{setPrice(event.target.value);}}
+        >
+          <MenuItem  value={"5"}>5</MenuItem>
+          <MenuItem value={"11"}>11</MenuItem>
+          <MenuItem value={"30"}>30</MenuItem>
+          <MenuItem value={"40"}>40</MenuItem>
+          <MenuItem value={"50"}>50</MenuItem>
+
+        </Select>
+        </Stack>
       </FormControl>
       </Stack>
     </Box>
@@ -133,10 +153,7 @@ export default function Mbid() {
             id="outlined-multiline-static"
             name='domainbids'
            // label="Domain,Bids"
-           placeholder="Domain,Bid
-Domain,Bid
-Domain,Bid
-Domain,Bid"
+           placeholder="Enter domains here please"
             multiline
             fullWidth
             rows={10}
@@ -147,65 +164,21 @@ Domain,Bid"
         </div>
         <Stack direction='row' justifyContent='space-between' paddingTop={2.5}>
         <Button onClick={()=>{
-            var arr= value.split("\n")
-            var a= arr.map((ar)=> {return ar.split(',')});
-            console.log(a);
+            var arr= value.split("\n");
             console.log(checked);
 
-            if(plat==="Dynadot")
+            if(plat==="GoDaddy")
             {
             if(!checked)
-            {api.schedulebiddyna(a).then((Response)=>{console.log(Response.data); setRes(Response.data); setOpen1(true);}).catch(error=>console.log(error));}
+            {api.schedulecloseoutgd(arr,price).then((Response)=>{console.log(Response.data); setRes(Response.data); setOpen1(true);}).catch(error=>console.log(error));}
             else
             {
-                api.instantbiddyna(a).then((Response)=>{console.log(Response.data); setRes(Response.data);setOpen(true);}).catch(error=>console.log(error));
-               
-            }}
-            else if(plat==="Dropcatch")
-            {
-              console.log(plat);
-
-              if(!checked)
-              {
-                api.schedulebiddc(a).then((Response)=>{console.log(Response.data); setRes(Response.data); setOpen1(true);}).catch((error)=>console.log(error))
-              }
-              else
-              {
-                api.instantbiddc(a).then((Response)=>{console.log(Response.data); setRes(Response.data); setOpen(true);}).catch((error)=>console.log(error))
-              }
-            }
-
-            else if(plat==="Namecheap")
-            {
-              console.log(plat);
-
-              if(!checked)
-              {
-                api.schedulebidnc(a).then((Response)=>{console.log(Response.data); setRes(Response.data); setOpen1(true);}).catch((error)=>console.log(error))
-              }
-              else
-              {
-                api.instantbidnc(a).then((Response)=>{console.log(Response.data); setRes(Response.data); setOpen(true);}).catch((error)=>console.log(error))
-              }
-            }
-            else if(plat==="GoDaddy")
-            {
-              console.log(plat);
-
-              if(!checked)
-              {
-                api.schedulebidgd(a).then((Response)=>{console.log(Response.data); setRes(Response.data); setOpen1(true);}).catch((error)=>console.log(error))
-              }
-              else
-              {
-                api.instantbidgd(a).then((Response)=>{console.log(Response.data); setRes(Response.data); setOpen(true);}).catch((error)=>console.log(error))
-              }
-            }
-
+                api.instantcloseoutgd(arr,price).then((Response)=>{console.log(Response.data); setRes(Response.data);setOpen(true);}).catch(error=>console.log(error));   
+            }}   
             setValue('');
             }} 
-            sx={{backgroundColor:'black' , alignSelf:"right", fontSize:12, paddingTop:0.1,paddingBottom:0.1,borderRadius:0.2,height:30}} variant="contained">Bulk Bid</Button>
-                    <FormControlLabel  control={<Switch color='primary' sx={{}} checked={checked} onChange={switchHandler}/>} label="Instant Bid" />
+            sx={{backgroundColor:'black' , alignSelf:"right", fontSize:12, paddingTop:0.1,paddingBottom:0.1,borderRadius:0.2,height:30}} variant="contained">Bulk Buy</Button>
+                    <FormControlLabel  control={<Switch color='primary' sx={{}} checked={checked} onChange={switchHandler}/>} label="Instant Buy" />
 
             </Stack>
         </Box>

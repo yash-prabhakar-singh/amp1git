@@ -13,6 +13,7 @@ import { Avatar, Box, Button, Checkbox, createTheme, CssBaseline, FormControlLab
 //import bg1 from 'C:\Users\Admin\Desktop\NameKart\frontend\src\images\section-blob-main-alt.svg'
 //import bgc from 'C:\Users\Admin\Desktop\NameKart\frontend\src\images\login.svg'
 import { LockOutlined } from "@mui/icons-material";
+import AuthService from "./AuthService";
 //import { useDispatch, useSelector } from "react-redux";
 
 {/*import Button from "@material-ui/core/Button";
@@ -124,13 +125,13 @@ const [password, setPassword]= useState("");
     setEmail(values.email);
     setPassword(values.password);
     console.log(values);
-    if(values.email==="user1"&&values.password==="Pass1234@")
-    {
+    if(AuthService.login(values.email,values.password))
+    {      
       navigate("/home");
     }
     else
     {
-      alert("wrong username or password");
+      alert("Wrong username or password");
     }
     /*AuthService.login(values.email,values.password).then((response)=>{if(response.status===400){console.log(response.data)} else{AuthService.registerSuccess(response.data); console.log(AuthService.getCurrentId());
       if(AuthService.isNego())

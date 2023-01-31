@@ -12,7 +12,7 @@ import { useEffect } from 'react';
 import api from './api';
 import { DataGrid } from '@mui/x-data-grid';
 
-export default function Live() {
+export default function GDLive() {
 
     let [rows,setRows]= React.useState([]);
     let [psize,setPsize]= React.useState(10);
@@ -33,9 +33,9 @@ export default function Live() {
  }
  */
  useEffect(() => {
-  api.getLive().then((res)=>{console.log(res.data); setRows(res.data);}).catch((err)=>console.log(err));
+  api.getLivenc().then((res)=>{console.log(res.data); setRows(res.data);}).catch((err)=>console.log(err));
 	let interval = setInterval(() => {
-		api.getLive().then((res)=>{console.log(res.data); setRows(res.data);}).catch((err)=>console.log(err));
+		api.getLivenc().then((res)=>{console.log(res.data); setRows(res.data);}).catch((err)=>console.log(err));
 	}, 30000);
 	return () => {
 		clearInterval(interval);
@@ -48,22 +48,22 @@ export default function Live() {
 
 
   const columns = [
-    { field: 'platform', headerName: 'Platform', width: 110 },
-    { field: 'domain', headerName: 'Domain', width: 210 },
+   // { field: 'platform', headerName: 'Platform', width: 110 },
+    { field: 'Name', headerName: 'Domain', width: 210 },
     {
-      field: 'current_bid_price',
+      field: 'Price',
       headerName: 'Price',
       type: 'number',
       width: 90,
     },
     {
-      field: 'bids',
+      field: 'BidCount',
       headerName: 'Bids',
       type: 'number',
       width: 70,
     },
     {
-      field: 'addtime',
+      field: 'addTime',
       headerName: 'Add Time',
       //description: 'This column has a value getter and is not sortable.',
       //sortable: false,
@@ -72,7 +72,7 @@ export default function Live() {
       valueGetter: (params) =>{return params.row.addtime.substring(11,16)}
     },
     {
-      field: 'time_left',
+      field: 'TimeLeft',
       headerName: 'Time Left',
       //description: 'This column has a value getter and is not sortable.',
       //sortable: false,
@@ -80,6 +80,12 @@ export default function Live() {
       width: 120,
       
     },
+    {
+      field: 'ValuationPrice',
+      headerName: 'GDV',
+      type: 'number',
+      width: 70,
+    }
    
   ];
   
@@ -112,10 +118,10 @@ export default function Live() {
     
       <Stack direction='column' alignItems='flex-start' sx={{width:'100%'}} spacing={2.5}>
       <Typography alignSelf='left' fontWeight='bold' color='text.primary' >
-            Live
+            Namecheap Live
         </Typography>
-<Button variant="contained" sx={{ fontSize:12, paddingTop:0.1,paddingBottom:0.1,borderRadius:0.2,height:30}} onClick={()=>{api.startLive().then(res=>console.log(res.data)).catch((err)=>console.log(err.data));}}>Start Live</Button>
-      <Box sx={{maxHeight: 400, width: 700}} >
+<Button variant="contained" sx={{ fontSize:12, paddingTop:0.1,paddingBottom:0.1,borderRadius:0.2,height:30}} onClick={()=>{api.startLivenc().then(res=>console.log(res.data)).catch((err)=>console.log(err.data));}}>Start Live</Button>
+      <Box sx={{maxHeight: 400, width: 650}} >
       <DataGrid autoHeight sx={{ width: '100%'}}
         rows={rows}
         columns={columns}

@@ -13,12 +13,14 @@ import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import axios from 'axios';
 import Sidebar from './Sidebar';
-import { Box, Button, Card, CardActionArea, CssBaseline, FormControl, FormControlLabel, Grid, InputLabel, MenuItem, Select, Stack, Switch, Tab, Typography } from '@mui/material';
+import { AppBar, Box, Button, Card, CardActionArea, CssBaseline, FormControl, FormControlLabel, Grid, IconButton, InputLabel, MenuItem, Select, Stack, Switch, Tab, Toolbar, Typography } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import api from './api';
 import Mbid from './MultipleBid';
+import { Menu, NotificationImportant } from '@mui/icons-material';
+import AuthService from './AuthService';
 //import { TabContext, TabList, TabPanel } from '@mui/lab';
 
 
@@ -26,8 +28,6 @@ import Mbid from './MultipleBid';
 export default function Home1() {
 
   let [rows,setRows]= React.useState([]);
-
- 
 
   const theme = createTheme({
     palette: {
@@ -74,6 +74,37 @@ export default function Home1() {
   return (
     <ThemeProvider theme={theme}><Box sx={{backgroundColor:'white', height:'100vh'}}>
       <CssBaseline/>
+      <Stack direction="column">
+      <Box sx={{ flexGrow: 1 }}>
+      <AppBar position="static">
+        <Toolbar //disableGutters
+        >
+          {<IconButton
+            size="large"
+            edge="start"
+            color="secondary"
+            aria-label="menu"
+            sx={{ mr: 2 }}
+          >
+            <Menu />
+  </IconButton>}
+  <Button color="inherit" ><Typography fontWeight={600} letterSpacing={3}>AMP</Typography></Button>
+  <Box sx={{ flexGrow: 1 }}></Box>
+  {<IconButton
+            size="large"
+            edge="start"
+            color="secondary"
+            onClick={()=>{navigate('/home/notifications')}}
+            aria-label="menu"
+            sx={{ mr: 2 }}
+          >
+            <NotificationImportant />
+  </IconButton>}
+          {!AuthService.isLoggedIn()&&<Button onClick={()=>{navigate('/login')}} color="inherit">Login</Button>}
+          {AuthService.isLoggedIn()&&<Button onClick={()=>{AuthService.logout(); navigate('/login')}} color="inherit">Logout</Button>}
+        </Toolbar>
+      </AppBar>
+    </Box>
     <Stack direction='row' paddingTop={4.5} justifyContent='flex-start' pl={2} spacing={12} sx={{}}>
 <Sidebar/>
 <Box width='70vw'  paddingTop={2} sx={{
@@ -90,6 +121,7 @@ export default function Home1() {
       }}>
     <Outlet/>
     </Box>
+    </Stack>
     </Stack>
     </Box>
     </ThemeProvider>

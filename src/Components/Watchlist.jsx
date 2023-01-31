@@ -20,43 +20,46 @@ export default function WatchList() {
   const columns = [
     { field: 'platform', headerName: 'Platform', width: 100 },
     { field: 'domain', headerName: 'Domain', width: 210 },
-    { field: 'auctiontype', headerName: 'Auction Type', width: 110 },
-    {
-      field: 'currbid',
-      headerName: 'Current Bid',
-      type: 'number',
-      width: 110,
-    },
-    {
-      field: 'bidders',
-      headerName: 'Bidders',
-      type: 'number',
-      width: 110,
-    },
-    {
-      field: 'time_left',
-      headerName: 'Time Left',
-      //description: 'This column has a value getter and is not sortable.',
-      //sortable: false,
-      type: 'date-time',
-      width: 110,
+      {
+        field: 'time_left',
+        headerName: 'Time Left',
+        //description: 'This column has a value getter and is not sortable.',
+        //sortable: false,
+        type: 'date-time',
+        width: 110,
+        
+      },
+      {
+        field: 'currbid',
+        headerName: 'Current Bid',
+        type: 'number',
+        width: 110,
+      },
       
-    },
-    {
-      field: 'age',
-      headerName: 'Age',
-      type: 'number',
-      width: 60,
-      //valueGetter: ()=>{return '4 mins'}
-    },
-    {
-      field: 'estibot',
-      headerName: 'Estibot',
-      type: 'number',
-      width: 110,
-      //valueGetter: ()=>{return '4 mins'}
-    },
-   
+     
+      {
+        field: 'bidders',
+        headerName: 'Bidders',
+        type: 'number',
+        width: 110,
+      },
+     
+      {
+        field: 'age',
+        headerName: 'Age',
+        type: 'number',
+        width: 70,
+        //valueGetter: ()=>{return '4 mins'}
+      },
+      {
+        field: 'estibot',
+        headerName: 'Estibot',
+        type: 'number',
+        width: 100,
+        //valueGetter: ()=>{return '4 mins'}
+      },
+      { field: 'auctiontype', headerName: 'Auction Type', width: 110 },
+    
   ];
   
     const theme = createTheme({
@@ -99,7 +102,7 @@ export default function WatchList() {
         pageSize={psize}
         initialState={{
             sorting: {
-              sortModel: [{ field: 'id', sort: 'desc' }],
+              sortModel: [{ field: 'time_left', sort: 'asc' }],
             },
           }}
         onPageSizeChange={(newPageSize) => setPsize(newPageSize)}
