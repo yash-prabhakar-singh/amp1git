@@ -107,7 +107,7 @@ export default function Bulkf() {
      setValue(event.target.value);
    };
  
-   const isMobile = useMediaQuery('(max-width:600px)');
+   const isMobile = useMediaQuery('(max-width:768px)');
 
 
    const [checked, setChecked] = React.useState(false);
@@ -211,38 +211,7 @@ export default function Bulkf() {
           setVariant("contained");
           }}  sx={{backgroundColor:'black' ,alignSelf : "right",fontSize:12, paddingTop:0.1,paddingBottom:0.1,borderRadius:0.2,height:30}} variant="contained">Fetch Details</Button> </Stack>
       </Box>
-      {/*bfdets&&<TableContainer component={Paper}>
       
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead sx={{fontWeight: 'bold'}}>
-          <TableRow sx={{fontWeight: 'bold'}}>
-            <TableCell sx={{fontWeight: 'bold'}}>domain</TableCell>
-            <TableCell sx={{fontWeight: 'bold'}} align="right">Auction Type</TableCell>
-            <TableCell sx={{fontWeight: 'bold'}} align="right">Current Bid</TableCell>
-            <TableCell sx={{fontWeight: 'bold'}} align="right">Bidders</TableCell>
-            <TableCell sx={{fontWeight: 'bold'}} align="right">Time Left</TableCell>
-            <TableCell sx={{fontWeight: 'bold'}} align="right">Age</TableCell>
-            <TableCell sx={{fontWeight: 'bold'}} align="right">Estibot</TableCell>
-          </TableRow>
-        </TableHead>
-        {<TableBody>
-         
-            <TableRow
-              key={1}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-             
-              <TableCell align="left">{fdets.domain}</TableCell>
-              <TableCell align="right">{fdets.auctiontype}</TableCell>
-              <TableCell align="right">{fdets.currbid}</TableCell>
-              <TableCell align="right">{fdets.bidders}</TableCell>
-              <TableCell align="right">{fdets.time_left}</TableCell> 
-              <TableCell align="right">{fdets.age}</TableCell>
-              <TableCell align="right">{fdets.estibot}</TableCell>
-            </TableRow>
-        </TableBody>}
-      </Table>
-    </TableContainer>*/}
     {bfdets&&<Box sx={{maxHeight: 400, width: 885}} >
     <DataGrid autoHeight sx={{ width: '100%'}}
       rows={fdets}
@@ -252,7 +221,6 @@ export default function Bulkf() {
       rowsPerPageOptions={[5,10,15,25,50]}
       disableSelectionOnClick
       components={{
-        // Use BaseCheckbox, but make sure your custom Checkbox expects props to match "CheckboxProps" from @mui/material else functionality will be lost.
         BaseCheckbox: CheckboxWrapper
       }}
       checkboxSelection
@@ -269,8 +237,9 @@ export default function Bulkf() {
 
     if(isMobile)
     return(<Mobile/>);
-    else
-    return(<Stack direction='column' spacing={2.5} sx={{width:'100%'}}>
+
+    return(
+    <>
       
     <Stack direction='row' justifyContent="flex-start">
     <Snackbar open={open} autoHideDuration={2000} anchorOrigin={{ vertical: "top", horizontal: "center" }} onClose={()=>{setOpen(false);}}>
@@ -363,38 +332,7 @@ export default function Bulkf() {
             setVariant("contained");
             }}  sx={{backgroundColor:'black' ,alignSelf : "right",fontSize:12, paddingTop:0.1,paddingBottom:0.1,borderRadius:0.2,height:30}} variant="contained">Fetch Details</Button> </Stack>
         </Box>
-        {/*bfdets&&<TableContainer component={Paper}>
-        
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead sx={{fontWeight: 'bold'}}>
-            <TableRow sx={{fontWeight: 'bold'}}>
-              <TableCell sx={{fontWeight: 'bold'}}>domain</TableCell>
-              <TableCell sx={{fontWeight: 'bold'}} align="right">Auction Type</TableCell>
-              <TableCell sx={{fontWeight: 'bold'}} align="right">Current Bid</TableCell>
-              <TableCell sx={{fontWeight: 'bold'}} align="right">Bidders</TableCell>
-              <TableCell sx={{fontWeight: 'bold'}} align="right">Time Left</TableCell>
-              <TableCell sx={{fontWeight: 'bold'}} align="right">Age</TableCell>
-              <TableCell sx={{fontWeight: 'bold'}} align="right">Estibot</TableCell>
-            </TableRow>
-          </TableHead>
-          {<TableBody>
-           
-              <TableRow
-                key={1}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
-               
-                <TableCell align="left">{fdets.domain}</TableCell>
-                <TableCell align="right">{fdets.auctiontype}</TableCell>
-                <TableCell align="right">{fdets.currbid}</TableCell>
-                <TableCell align="right">{fdets.bidders}</TableCell>
-                <TableCell align="right">{fdets.time_left}</TableCell> 
-                <TableCell align="right">{fdets.age}</TableCell>
-                <TableCell align="right">{fdets.estibot}</TableCell>
-              </TableRow>
-          </TableBody>}
-        </Table>
-      </TableContainer>*/}
+       
       {bfdets&&<Box sx={{maxHeight: 400, width: 885}} >
       <DataGrid autoHeight sx={{ width: '100%'}}
         rows={fdets}
@@ -412,7 +350,7 @@ export default function Bulkf() {
       /></Box>}
      
       </Stack>
-      </Stack>)
+      </>)
 
  /* return (
    
@@ -436,17 +374,3 @@ function CheckboxWrapper(props) {
     />
   );
 }
-{/* <Button onClick={()=>{
-            var arr= value.split(",")
-            //var a= arr.map((ar)=> {return ar.split(',')});
-            console.log(arr);
-            console.log(checked);
-            if(!checked)
-           { axios.post('http://localhost:8080/postDomainsingle',arr).then((Response)=>{console.log(Response.data); setBool(Response.data);});}
-           else
-           {
-            axios.post('http://localhost:8080/postDomainsingleinstant',arr).then((Response)=>{console.log(Response.data); setBool(Response.data); if(!bool)
-        {alert("Bid placed Successfully.")}
-        });
-           }
-            }} sx={{alignSelf : "right",fontSize:12, paddingTop:0.1,paddingBottom:0.1,borderRadius:0.2,height:30}} variant="contained">Submit</Button> */}

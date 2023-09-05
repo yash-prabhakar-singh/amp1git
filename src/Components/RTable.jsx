@@ -1,11 +1,9 @@
-import { Box, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
+import { Box, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography, useMediaQuery } from '@mui/material';
 import * as React from 'react';
 import axios from 'axios';
 import api from './api';
 import { DataGrid } from '@mui/x-data-grid';
 import { MultipleStop } from '@mui/icons-material';
-
-
 
 function RTable() {
 
@@ -52,6 +50,8 @@ React.useEffect(()=>{api.getcompletedauctions().then((response)=>{setRows(respon
   //const handleChange = (event) => {
     //setValue(event.target.value);
  // };
+
+ 
     return (
     
     <Box>
