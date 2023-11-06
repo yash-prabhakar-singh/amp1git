@@ -75,8 +75,8 @@ export default function Mbid() {
   };
 
   return (
-    
-    <Stack direction='column' sx={{width: '100%'}} spacing={2.5}>
+    <Stack direction='row' justifyContent='center' sx={{width: '100%'}}>
+    <Stack direction='column'  spacing={2.5}>
     <Stack direction='row' justifyContent="flex-start">
     <Snackbar open={open} autoHideDuration={4000} anchorOrigin={{ vertical: "top", horizontal: "center" }} onClose={()=>{setOpen(false);}}>
         <Alert onClose={()=>{setOpen(false);}} severity="info" sx={{ width: '100%' }}>
@@ -90,7 +90,8 @@ export default function Mbid() {
       </Snackbar>
         <Typography alignSelf='left' fontWeight='bold' color='text.primary' >
             Bulk Bid
-        </Typography></Stack>
+        </Typography>
+        </Stack>
         <Stack spacing={2.5} >
     <Box sx={{ width:150 }}>
       <Stack alignItems='flex-start' spacing={1.5}>
@@ -215,7 +216,7 @@ Domain,Bid"
        </Box>*/}
       </Stack>
       </Stack>
-   
+      </Stack>
     
   );
 }

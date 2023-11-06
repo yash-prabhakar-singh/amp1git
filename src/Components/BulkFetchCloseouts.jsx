@@ -54,7 +54,8 @@ export default function Bulkfetchcloseout() {
     const navigate = useNavigate();
     const [plat,setPlat]= React.useState("GoDaddy");
     const [price,setPrice]= React.useState("5");
-
+    const [num,setNum]= React.useState(0);
+    const [den,setDen]= React.useState(0);
     const [fdets,setFdets]= React.useState([]);
     const [bfdets,setBfdets]= React.useState(false);
     const [value, setValue] = React.useState('');
@@ -116,7 +117,7 @@ export default function Bulkfetchcloseout() {
     <Stack direction='row' justifyContent="flex-start">
     <Snackbar open={open} autoHideDuration={2000} anchorOrigin={{ vertical: "top", horizontal: "center" }} onClose={()=>{setOpen(false);}}>
         <Alert  severity="success" sx={{ width: '100%' }}>
-          Details fetched!
+          Details fetched of {num}/{den} domains!
         </Alert>
       </Snackbar>
         <Typography alignSelf='left'  fontWeight='bold' color='text.primary' >
@@ -136,8 +137,7 @@ export default function Bulkfetchcloseout() {
           id="demo-simple-select"
          // value={plat}
           value={plat}
-          label="Platforms"
-          
+          label="Platforms"          
           onChange={(event)=>{setPlat(event.target.value);}}
         >
           <MenuItem  value={"Dynadot"}>Dynadot</MenuItem>
@@ -189,7 +189,7 @@ export default function Bulkfetchcloseout() {
             //var a= arr.map((ar)=> {return ar.split(',')});
             console.log(arr);
             if(plat==='GoDaddy')
-            {api.fetchDetailscloseoutsgd(arr).then((Response)=>{console.log(Response.data); setFdets(Response.data);
+            {api.fetchDetailscloseoutsgd(arr).then((Response)=>{console.log(Response.data);setFdets(Response.data); setNum(fdets.length); setDen(arr.length);
               if(fdets.length!=0)
               setOpen(true);
               setBfdets(true);}).catch((Response)=>{console.log(Response.error);//setBfdets(false);
@@ -245,7 +245,7 @@ export default function Bulkfetchcloseout() {
           BaseCheckbox: CheckboxWrapper
         }}
         checkboxSelection
-        onSelectionModelChange={itm => {console.log(itm); //api.watchlist(itm,fdets).then().catch(err=>console.log(err)) 
+        onSelectionModelChange={itm => {console.log(itm); api.watchlistcloseouts(itm,fdets).then().catch(err=>console.log(err)) 
         }}
       /></Box>}
      

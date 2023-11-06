@@ -26,6 +26,7 @@ import CloseoutList from './Components/CloseoutList';
 import CloseoutsReport from './Components/CloseoutsReport';
 import Bulkfgdv from './Components/BulkFetchGDV';
 import AuthenticatedRoute from './Components/AuthenticatedRoute';
+import Watchlistcloseouts from './Components/CloseoutsWatchlist';
 
 function App() {
   return (
@@ -48,7 +49,7 @@ function App() {
           <Route path="biddinglist" element={<BiddingList/>}/>
           <Route path="closeouts/closeoutlist" element={<CloseoutList/>}/>
           <Route path="closeouts/report" element={<CloseoutsReport/>}/>
-
+          <Route path="closeouts/watchlist" element={<Watchlistcloseouts/>}/>
      <Route path="auctionsreport" element={<AuctionsReport/>}/>
      <Route path="sample" element={<Ssubmit/>}/>
      <Route path="live/dynadot" element={<Live/>}/>

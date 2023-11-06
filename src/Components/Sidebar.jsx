@@ -340,7 +340,7 @@ const navigate= useNavigate();
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton onClick={()=>navigate('/closeouts/bulkbuy')}
+            <ListItemButton onClick={()=>navigate('/home/closeouts/watchlist')}
             >
               
               <Login />

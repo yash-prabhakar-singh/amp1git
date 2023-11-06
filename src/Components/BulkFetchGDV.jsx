@@ -13,13 +13,15 @@ import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import axios from 'axios';
 import Sidebar from './Sidebar';
-import { Alert, Box, Button, Card, CardActionArea, Checkbox, CssBaseline, FormControl, FormControlLabel, Grid, InputLabel, MenuItem, Select, Snackbar, Stack, Switch, Tab, Typography, useMediaQuery } from '@mui/material';
+import { Alert, Box, Button, Card, CardActionArea, Checkbox, CssBaseline, Divider, FormControl, FormControlLabel, Grid, IconButton, InputLabel, MenuItem, Select, Snackbar, Stack, Switch, Tab, Typography, useMediaQuery } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import api from './api';
 import { DataGrid } from '@mui/x-data-grid';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
+import { CSVLink } from 'react-csv';
+import { Download } from '@mui/icons-material';
 
 //import { TabContext, TabList, TabPanel } from '@mui/lab';
 
@@ -68,6 +70,10 @@ export default function Bulkfgdv() {
         width: 70,
       }
     ];
+    const headers = [
+      { label: "Domain", key: "domain" },
+      { label: "GDV", key: "govalue" },
+  ];
     React.useEffect(() => { console.log(plat);console.log(plat);}, [plat])
     React.useEffect(() => {}, [bool]);
    const handleChange = (event) => {
@@ -76,7 +82,8 @@ export default function Bulkfgdv() {
  
    const isMobile = useMediaQuery('(max-width:600px)');
 
-
+   const [loaded, setLoaded] = React.useState(false);
+   const [loading, setLoading] = React.useState(false);
    const [checked, setChecked] = React.useState(false);
    const [variant, setVariant] = React.useState("outlined");
  const [open,setOpen]= React.useState(false);
@@ -92,9 +99,10 @@ export default function Bulkfgdv() {
     if(isMobile)
     return(<Mobile/>);
     else
-    return(<Stack direction='column' spacing={2.5} sx={{width:'100%'}}>
-      
-    <Stack direction='row' justifyContent="flex-start">
+    return(
+      <Stack direction='row' justifyContent='center' sx={{width:'100%'}}>
+    <Stack direction='column' spacing={2.5} >
+      <Stack direction='row' justifyContent="flex-start" >
     <Snackbar open={open} autoHideDuration={2000} anchorOrigin={{ vertical: "top", horizontal: "center" }} onClose={()=>{setOpen(false);}}>
         <Alert  severity="success" sx={{ width: '100%' }}>
           Details fetched!
@@ -103,7 +111,8 @@ export default function Bulkfgdv() {
         <Typography alignSelf='left'  fontWeight='bold' color='text.primary' >
             Bulk Fetch GDV
         </Typography></Stack>
-        <Stack direction='row' spacing={20}>
+   
+        <Stack direction='row'  spacing={20}>
         
     <Box 
         component="form"
@@ -113,6 +122,7 @@ export default function Bulkfgdv() {
         noValidate
         autoComplete="off"
       >
+         
         <div>
         <Stack alignItems='flex-start' spacing={1.5}>
         <Typography color='text.secondary'>
@@ -139,26 +149,46 @@ export default function Bulkfgdv() {
         {/*<FormControlLabel control={<Switch checked={checked} onChange={switchHandler}/>} label="Instant Bid" />
   */}
         <Button onClick={()=>{
+          setLoading(true);
             var arr= value.split("\n")
             //var a= arr.map((ar)=> {return ar.split(',')});
+            setFdets([]);
             console.log(arr);
-            api.fetchgdv(arr).then((res)=>{console.log(res.data); setFdets(res.data);if(fdets.length!=0)
+            api.fetchgdv(arr).then((res)=>{console.log(res.data); setFdets(res.data);setLoaded(true);setLoading(false);if(fdets.length!=0)
               setOpen(true);}).catch((err)=>console.log(err))
             setBfdets(true);
            // setValue('');
             setVariant("contained");
-            }}  sx={{backgroundColor:'black' ,alignSelf : "right",fontSize:12, paddingTop:0.1,paddingBottom:0.1,borderRadius:0.2,height:30}} variant="contained">Fetch GDVs</Button> </Stack>
+            }}  sx={{backgroundColor:'black' ,alignSelf : "right",fontSize:12, paddingTop:0.1,paddingBottom:0.1,borderRadius:0.2,height:30}} variant="contained">{loading?"Fetching..":"Fetch GDVs"}</Button> </Stack>
+        
         </Box>
-       
+       <Box>
+      {bfdets&&<Divider orientation='vertical'  />}
+      </Box>
       
-     
-      
-      <Stack>
+      <Stack width={370}>
       {bfdets&&<Box  >
         <Stack direction='column' alignItems='flex-start' spacing={1.5} sx={{maxHeight: 400, width: 370}}>
+        <Stack direction='row' justifyContent='space-between' width={370}>
         <Typography color='text.secondary'>
           Domains with GDVs:
         </Typography>
+        <Box >
+        {loaded&&<IconButton
+                variant='contained'
+                color="primary"
+                sx={{alignSelf : "right",fontSize:12, paddingTop:0.1,paddingBottom:0.1,borderRadius:0.2,height:30}}
+            >
+                <CSVLink
+                    headers={headers}
+                    data={fdets}
+                    filename="GDVs"
+                    style={{ "textDecoration": "none", "color": "black" }}
+                >
+                    {<Download/>}
+                </CSVLink>
+            </IconButton>}</Box>
+        </Stack>
       <DataGrid autoHeight sx={{ width: '100%'}}
         rows={fdets}
         getRowId={(row) => row.domain} 
@@ -175,6 +205,7 @@ export default function Bulkfgdv() {
         //onSelectionModelChange={itm => {console.log(itm); api.watchlist(itm,fdets).then().catch(err=>console.log(err)) }}
       />
       </Stack></Box>}
+      </Stack>
       </Stack>
       </Stack>
       </Stack>)

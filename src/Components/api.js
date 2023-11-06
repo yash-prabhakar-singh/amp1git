@@ -4,6 +4,9 @@ class api
 { key="8B8Y70UXd7o7D58A8rh7N829B629L9H8W9G7e7q9W8d";
 
   url="http://localhost:8443";
+ //url="http://139.84.171.248:8443";
+  //url="http://api:8443";
+
 
 getDetails(domain)
 {
@@ -12,7 +15,7 @@ getDetails(domain)
 }
 
 fetchDetailsdyna(domains)
-{
+{//fetchdetailsdyna
    return axios.post(`${this.url}/fetchdetailsdyna`,domains)
 }
 
@@ -89,6 +92,10 @@ getwatchlist()
 {
    return axios.get(`${this.url}/getwatchlist`);
 }
+getwatchlistCloseout()
+{
+   return axios.get(`${this.url}/getWatchlistCloseouts`);
+}
 
 watchlist(ids, rows)
 {
@@ -100,6 +107,18 @@ watchlist(ids, rows)
    console.log(nids)
    const arr=[ids,nids];
    return axios.put(`${this.url}/watchlisted`,arr);
+}
+
+watchlistcloseouts(ids, rows)
+{
+   ids= ids.map((id)=>{return Number(id);})
+   const set = new Set(ids);
+   let all= rows.map((row)=> { return row.id})
+   let nids = all.filter((al)=>{return !set.has(al)})
+   console.log(ids)
+   console.log(nids)
+   const arr=[ids,nids];
+   return axios.put(`${this.url}/watchlistedcloseout`,arr);
 }
 
 
@@ -166,7 +185,7 @@ return axios.post(`${this.url}/bulkbidd`,ddlist);
 }
 
 schedulebiddyna(ddlist)
-{
+{//postDomains
 return axios.post(`${this.url}/postDomains`,ddlist);
 }
 

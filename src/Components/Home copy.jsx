@@ -13,14 +13,15 @@ import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import axios from 'axios';
 import Sidebar from './Sidebar';
-import { AppBar, Box, Button, Card, CardActionArea, CssBaseline, FormControl, FormControlLabel, Grid, IconButton, InputLabel, MenuItem, Select, Stack, Switch, Tab, Toolbar, Typography } from '@mui/material';
+import { alpha, AppBar, Box, Button, Card, CardActionArea, CssBaseline, Divider, FormControl, FormControlLabel, Grid, IconButton, InputLabel, MenuItem, Select, Stack, Switch, Tab, Toolbar, Typography,Menu } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import api from './api';
 import Mbid from './MultipleBid';
-import { Menu, NotificationImportant } from '@mui/icons-material';
+import { MenuTwoTone, NotificationImportant } from '@mui/icons-material';
 import AuthService from './AuthService';
+import AppBarMenu from './AppBarMenu';
 //import { TabContext, TabList, TabPanel } from '@mui/lab';
 
 
@@ -28,7 +29,7 @@ import AuthService from './AuthService';
 export default function Home1() {
 
   let [rows,setRows]= React.useState([]);
-
+ 
   const theme = createTheme({
     palette: {
       primary: {
@@ -66,18 +67,16 @@ export default function Home1() {
 
   const [checked, setChecked] = useState(false);
 
-  const switchHandler = (event) => {
-    setChecked(event.target.checked);
-    console.log(checked)
-  };
+  
 
   return (
     <ThemeProvider theme={theme}><Box sx={{backgroundColor:'white', height:'100vh'}}>
       <CssBaseline/>
       <Stack direction="column">
       <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
-        <Toolbar //disableGutters
+      <AppBar position="static" //sx={{height:50  }}
+      >
+        <Toolbar variant='dense' //disableGutters
         >
           {<IconButton
             size="large"
@@ -85,8 +84,9 @@ export default function Home1() {
             color="secondary"
             aria-label="menu"
             sx={{ mr: 2 }}
+            
           >
-            <Menu />
+            <MenuTwoTone />
   </IconButton>}
   <Button color="inherit" ><Typography fontWeight={600} letterSpacing={3}>AMP</Typography></Button>
   <Box sx={{ flexGrow: 1 }}></Box>
@@ -105,15 +105,18 @@ export default function Home1() {
         </Toolbar>
       </AppBar>
     </Box>
-    <Stack direction='row' paddingTop={4.5} justifyContent='flex-start' pl={2} spacing={12} sx={{}}>
-<Sidebar/>
-<Box width='70vw'  paddingTop={2} sx={{
+    {AuthService.isLoggedIn()&&<AppBarMenu/>}
+    <Stack direction='row' paddingTop={4.5} justifyContent='center' pl={0} spacing={12} sx={{}}>
+{//<Sidebar/>
+}
+
+<Box width='80vw'  paddingTop={2} sx={{
        
        // maxWidth: 360,
         //bgcolor: 'background.paper',
         position: 'relative',
         overflow: 'auto',
-        maxHeight: 570,
+        //maxHeight: 570,
         
         '&::-webkit-scrollbar':{
           width:0,

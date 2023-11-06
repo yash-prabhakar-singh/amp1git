@@ -13,7 +13,7 @@ import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import axios from 'axios';
 import Sidebar from './Sidebar';
-import { Alert, Box, Button, Card, CardActionArea, Checkbox, CssBaseline, FormControl, FormControlLabel, Grid, InputLabel, MenuItem, Select, Snackbar, Stack, Switch, Tab, Typography, useMediaQuery } from '@mui/material';
+import { Alert, Box, Button, Card, CardActionArea, Checkbox, CssBaseline, Divider, FormControl, FormControlLabel, Grid, InputLabel, MenuItem, Select, Snackbar, Stack, Switch, Tab, Typography, useMediaQuery } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import api from './api';
@@ -51,12 +51,17 @@ export default function Bulkf() {
     }
     );
 
+
     const navigate = useNavigate();
     const [plat,setPlat]= React.useState("Dynadot");
     const [fdets,setFdets]= React.useState([]);
     const [bfdets,setBfdets]= React.useState(false);
     const [value, setValue] = React.useState('');
     const [psize, setPsize] = React.useState(10);
+    const [den, setDen] = React.useState(0);
+    const [num, setNum] = React.useState(0);
+    const n=0;
+    const d=0;
     const [bool, setBool] = React.useState(false);
     const columns = [
       { field: 'domain', headerName: 'Domain', width: 210 },
@@ -117,152 +122,7 @@ export default function Bulkf() {
      console.log(checked);
    };
 
-  const Web=()=>{return(<Stack direction='column' spacing={2.5} sx={{width:'100%'}}>
-      
-  <Stack direction='row' justifyContent="flex-start">
-  <Snackbar open={open} autoHideDuration={2000} anchorOrigin={{ vertical: "top", horizontal: "center" }} onClose={()=>{setOpen(false);}}>
-      <Alert  severity="success" sx={{ width: '100%' }}>
-        Details fetched!
-      </Alert>
-    </Snackbar>
-      <Typography alignSelf='left'  fontWeight='bold' color='text.primary' >
-          Bulk Fetch
-      </Typography></Stack>
-      <Stack spacing={2.5} >
-  <Box sx={{ width: 150 }}>
-    <Stack alignItems='flex-start' spacing={1.5}>
-      <Typography color="text.secondary">
-        Choose Platform:
-      </Typography>
-    <FormControl fullWidth>
-    <Stack direction="row">
-    <Select  sx={{height:40, '& legend': { display: 'none' },
-  '& fieldset': { top: 0 }, color:'text.primary', fontWeight:'600',  padding: "0px 0px 0px 0px !important"}}
-        labelId="demo-simple-select-label"
-        id="demo-simple-select"
-       // value={plat}
-        value={plat}
-        label="Platforms"
-        
-        onChange={(event)=>{setPlat(event.target.value);}}
-      >
-        <MenuItem  value={"Dynadot"}>Dynadot</MenuItem>
-        <MenuItem value={"GoDaddy"}>GoDaddy</MenuItem>
-        <MenuItem value={"Dropcatch"}>Dropcatch</MenuItem>
-        <MenuItem value={"Namecheap"}>Namecheap</MenuItem>
-      </Select>
 
-      <Box width={25}></Box>
-      </Stack>
-    </FormControl>
-    </Stack>
-  </Box>
-  <Box 
-      component="form"
-      sx={{
-         width: '45vw'
-      }}
-      noValidate
-      autoComplete="off"
-    >
-      <div>
-      <Stack alignItems='flex-start' spacing={1.5}>
-      <Typography color='text.secondary'>
-        Enter the list of domains:
-      </Typography>
-        <TextField
-          id="outlined-multiline-static"
-          name='domainbids'
-          //label="Domains"
-          //InputLabelProps={{shrink: false}}
-        //  sx={{ '& legend': { display: 'none' }, '& fieldset': { top: 0 },}}
-        placeholder="Domains"
-          multiline
-          rows={10}
-          fullWidth
-          onChange={handleChange}
-          value={value}
-         
-        />
-        </Stack>
-      </div>
-      <Stack direction='row' justifyContent="flex-start" paddingTop={2.5}>
-      {/*<FormControlLabel control={<Switch checked={checked} onChange={switchHandler}/>} label="Instant Bid" />
-*/}
-      <Button onClick={()=>{
-          var arr= value.split("\n")
-          //var a= arr.map((ar)=> {return ar.split(',')});
-          console.log(arr);
-          if(plat==='Dynadot')
-          {api.fetchDetailsdyna(arr).then((Response)=>{console.log(Response.data); setFdets(Response.data);
-            if(fdets.length!=0)
-            setOpen(true);
-            setBfdets(true);}).catch((Response)=>{console.log(Response.error);//setBfdets(false);
-          });}
-          else if(plat==='Dropcatch')
-          {
-            api.fetchDetailsdc(arr).then((Response)=>{console.log(Response.data); setFdets(Response.data);setOpen(true);setBfdets(true);}).catch((Response)=>{console.log(Response.error);});
-          }
-
-          else if(plat==='Namecheap')
-          {
-            api.fetchDetailsnc(arr).then((Response)=>{console.log(Response.data); setFdets(Response.data);setOpen(true);setBfdets(true);}).catch((Response)=>{console.log(Response.error);});
-          }
-          setBfdets(true);
-         // setValue('');
-          setVariant("contained");
-          }}  sx={{backgroundColor:'black' ,alignSelf : "right",fontSize:12, paddingTop:0.1,paddingBottom:0.1,borderRadius:0.2,height:30}} variant="contained">Fetch Details</Button> </Stack>
-      </Box>
-      {/*bfdets&&<TableContainer component={Paper}>
-      
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead sx={{fontWeight: 'bold'}}>
-          <TableRow sx={{fontWeight: 'bold'}}>
-            <TableCell sx={{fontWeight: 'bold'}}>domain</TableCell>
-            <TableCell sx={{fontWeight: 'bold'}} align="right">Auction Type</TableCell>
-            <TableCell sx={{fontWeight: 'bold'}} align="right">Current Bid</TableCell>
-            <TableCell sx={{fontWeight: 'bold'}} align="right">Bidders</TableCell>
-            <TableCell sx={{fontWeight: 'bold'}} align="right">Time Left</TableCell>
-            <TableCell sx={{fontWeight: 'bold'}} align="right">Age</TableCell>
-            <TableCell sx={{fontWeight: 'bold'}} align="right">Estibot</TableCell>
-          </TableRow>
-        </TableHead>
-        {<TableBody>
-         
-            <TableRow
-              key={1}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-             
-              <TableCell align="left">{fdets.domain}</TableCell>
-              <TableCell align="right">{fdets.auctiontype}</TableCell>
-              <TableCell align="right">{fdets.currbid}</TableCell>
-              <TableCell align="right">{fdets.bidders}</TableCell>
-              <TableCell align="right">{fdets.time_left}</TableCell> 
-              <TableCell align="right">{fdets.age}</TableCell>
-              <TableCell align="right">{fdets.estibot}</TableCell>
-            </TableRow>
-        </TableBody>}
-      </Table>
-    </TableContainer>*/}
-    {bfdets&&<Box sx={{maxHeight: 400, width: 835}} >
-    <DataGrid autoHeight sx={{ width: '100%'}}
-      rows={fdets}
-      columns={columns}
-      pageSize={psize}
-      onPageSizeChange={(p)=>{setPsize(p)}}
-      rowsPerPageOptions={[5,10,15,25,50]}
-      disableSelectionOnClick
-      components={{
-        // Use BaseCheckbox, but make sure your custom Checkbox expects props to match "CheckboxProps" from @mui/material else functionality will be lost.
-        BaseCheckbox: CheckboxWrapper
-      }}
-      checkboxSelection
-      onSelectionModelChange={itm => {console.log(itm); api.watchlist(itm,fdets).then().catch(err=>console.log(err)) }}
-    /></Box>}
-   
-    </Stack>
-    </Stack>);}
 
     const Mobile=()=>{return(
     <Typography>Mobile version, Yet to be designed</Typography>);}
@@ -270,12 +130,13 @@ export default function Bulkf() {
     if(isMobile)
     return(<Mobile/>);
     else
-    return(<Stack direction='column' spacing={2.5} sx={{width:'100%'}}>
-      
-    <Stack direction='row' justifyContent="flex-start">
+    return(<Stack direction='row' width='100%' justifyContent='center'>
+    <Stack direction='column' alignItems='center' spacing={2.5} sx={{width:860}}>
+    <Stack direction='column'  spacing={2.5} >
+    <Stack direction='row' justifyContent="flex-start" >
     <Snackbar open={open} autoHideDuration={2000} anchorOrigin={{ vertical: "top", horizontal: "center" }} onClose={()=>{setOpen(false);}}>
         <Alert  severity="success" sx={{ width: '100%' }}>
-          Details fetched!
+        Details fetched of {num}/{den} domains!
         </Alert>
       </Snackbar>
         <Typography alignSelf='left'  fontWeight='bold' color='text.primary' >
@@ -299,10 +160,13 @@ export default function Bulkf() {
           
           onChange={(event)=>{setPlat(event.target.value);}}
         >
-          <MenuItem  value={"Dynadot"}>Dynadot</MenuItem>
-          <MenuItem value={"GoDaddy"}>GoDaddy</MenuItem>
-          <MenuItem value={"Dropcatch"}>Dropcatch</MenuItem>
-          <MenuItem value={"Namecheap"}>Namecheap</MenuItem>
+          <MenuItem  value={"Dynadot"} sx={{ paddingY:0}}>Dynadot</MenuItem>
+         <Divider/>
+          <MenuItem  value={"GoDaddy"} sx={{ paddingY:0}}>GoDaddy</MenuItem>
+          <Divider/>
+          <MenuItem value={"Dropcatch"} sx={{ paddingY:0}}>Dropcatch</MenuItem>         
+          <Divider/>
+          <MenuItem value={"Namecheap"} sx={{ paddingY:0}}>Namecheap</MenuItem>
         </Select>
       </FormControl>
       </Stack>
@@ -313,8 +177,7 @@ export default function Bulkf() {
            width: '45vw'
         }}
         noValidate
-        autoComplete="off"
-      >
+        autoComplete="off">
         <div>
         <Stack alignItems='flex-start' spacing={1.5}>
         <Typography color='text.secondary'>
@@ -345,61 +208,41 @@ export default function Bulkf() {
             console.log(arr);
             if(plat==='Dynadot')
             {api.fetchDetailsdyna(arr).then((Response)=>{console.log(Response.data); setFdets(Response.data);
-              if(fdets.length!=0)
-              setOpen(true);
+             // n=Response.data.length; d= arr.length;
+              setNum(fdets.length); setDen(arr.length);
+            if(Response.data.length!=0)
+            setOpen(true);
               setBfdets(true);}).catch((Response)=>{console.log(Response.error);//setBfdets(false);
             });}
             else if(plat==='Dropcatch')
             {
-              api.fetchDetailsdc(arr).then((Response)=>{console.log(Response.data); setFdets(Response.data);setOpen(true);setBfdets(true);}).catch((Response)=>{console.log(Response.error);});
+              api.fetchDetailsdc(arr).then((Response)=>{console.log(Response.data); setFdets(Response.data);setNum(fdets.length); setDen(arr.length);
+                if(fdets.length!=0)
+                setOpen(true);
+                setBfdets(true);}).catch((Response)=>{console.log(Response.error);});
             }
   
             else if(plat==='Namecheap')
             {
-              api.fetchDetailsnc(arr).then((Response)=>{console.log(Response.data); setFdets(Response.data);setOpen(true);setBfdets(true);}).catch((Response)=>{console.log(Response.error);});
+              api.fetchDetailsnc(arr).then((Response)=>{console.log(Response.data); setFdets(Response.data);setNum(fdets.length); setDen(arr.length);
+                if(fdets.length!=0)
+                setOpen(true);
+                setBfdets(true);}).catch((Response)=>{console.log(Response.error);});
             }
             else if(plat==='GoDaddy')
             {
-              api.fetchDetailsgodaddy(arr).then((Response)=>{console.log(Response.data); setFdets(Response.data);setOpen(true);setBfdets(true);}).catch((Response)=>{console.log(Response.error);});
+              api.fetchDetailsgodaddy(arr).then((Response)=>{console.log(Response.data); setFdets(Response.data);setNum(fdets.length); setDen(arr.length);
+                if(fdets.length!=0)
+                setOpen(true);
+                setBfdets(true);}).catch((Response)=>{console.log(Response.error);});
             }
             setBfdets(true);
            // setValue('');
             setVariant("contained");
             }}  sx={{backgroundColor:'black' ,alignSelf : "right",fontSize:12, paddingTop:0.1,paddingBottom:0.1,borderRadius:0.2,height:30}} variant="contained">Fetch Details</Button> </Stack>
         </Box>
-        {/*bfdets&&<TableContainer component={Paper}>
-        
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead sx={{fontWeight: 'bold'}}>
-            <TableRow sx={{fontWeight: 'bold'}}>
-              <TableCell sx={{fontWeight: 'bold'}}>domain</TableCell>
-              <TableCell sx={{fontWeight: 'bold'}} align="right">Auction Type</TableCell>
-              <TableCell sx={{fontWeight: 'bold'}} align="right">Current Bid</TableCell>
-              <TableCell sx={{fontWeight: 'bold'}} align="right">Bidders</TableCell>
-              <TableCell sx={{fontWeight: 'bold'}} align="right">Time Left</TableCell>
-              <TableCell sx={{fontWeight: 'bold'}} align="right">Age</TableCell>
-              <TableCell sx={{fontWeight: 'bold'}} align="right">Estibot</TableCell>
-            </TableRow>
-          </TableHead>
-          {<TableBody>
-           
-              <TableRow
-                key={1}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
-               
-                <TableCell align="left">{fdets.domain}</TableCell>
-                <TableCell align="right">{fdets.auctiontype}</TableCell>
-                <TableCell align="right">{fdets.currbid}</TableCell>
-                <TableCell align="right">{fdets.bidders}</TableCell>
-                <TableCell align="right">{fdets.time_left}</TableCell> 
-                <TableCell align="right">{fdets.age}</TableCell>
-                <TableCell align="right">{fdets.estibot}</TableCell>
-              </TableRow>
-          </TableBody>}
-        </Table>
-      </TableContainer>*/}
-      {bfdets&&<Box sx={{maxHeight: 400, width: 885}} >
+        </Stack>
+      {bfdets&&<Box sx={{maxHeight: 400, width: 850}} >
       <DataGrid autoHeight sx={{ width: '100%'}}
         rows={fdets}
         columns={columns}
@@ -415,6 +258,7 @@ export default function Bulkf() {
         onSelectionModelChange={itm => {console.log(itm); api.watchlist(itm,fdets).then().catch(err=>console.log(err)) }}
       /></Box>}
      
+      </Stack>
       </Stack>
       </Stack>)
 

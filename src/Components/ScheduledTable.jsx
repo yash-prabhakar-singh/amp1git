@@ -21,7 +21,11 @@ React.useEffect(()=>{api.getscheduledauctions().then((response)=>{setRows(respon
 const columns = [
   { field: 'platform', headerName: 'Platform', width: 100 },
   { field: 'domain', headerName: 'Domain', width: 210 },
-  { field: 'auctiontype', headerName: 'Auction Type', width: 120 },
+  { field: 'type', headerName: 'Type', width: 50 ,
+  valueGetter: (params) =>{if(params.row.auctiontype.charAt(0)=='e'||params.row.auctiontype.charAt(0)=='E')
+return 'E';
+else return 'O';}
+},
   {
     field: 'bidAmount',
     headerName: 'Our Max Bid',
@@ -65,43 +69,7 @@ const columns = [
             Scheduled Bids
         </Typography>
 
-    {/*<TableContainer component={Paper}>
-        
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead sx={{fontWeight: 'bold'}}>
-            <TableRow sx={{fontWeight: 'bold'}}>
-              <TableCell sx={{fontWeight: 'bold'}}>Platform</TableCell>
-              <TableCell sx={{fontWeight: 'bold'}} align="right">Domain</TableCell>
-              <TableCell sx={{fontWeight: 'bold'}} align="right">Auction Type</TableCell>
-              <TableCell sx={{fontWeight: 'bold'}} align="right">Our Max Bid</TableCell>
-              <TableCell sx={{fontWeight: 'bold'}} align="right">Current Bid</TableCell>
-              
-              <TableCell sx={{fontWeight: 'bold'}} align="right">Auction End Time (IST)</TableCell>
-              <TableCell sx={{fontWeight: 'bold'}} align="right">Bid Buffer</TableCell>
-              
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map((row,index) => (
-              <TableRow
-                key={row.domain}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
-               
-                <TableCell align="left">{row.platform}</TableCell>
-                <TableCell align="right">{row.domain}</TableCell>
-                <TableCell align="right">{row.auctiontype}</TableCell>
-                <TableCell align="right">{row.bidAmount}</TableCell>
-                <TableCell align="right">{row.currbid}</TableCell>
-                <TableCell align="right">{row.endTimeist.substring(0,16)}</TableCell>
-                <TableCell align="right">4 mins</TableCell>
-               // <TableCell align="right">{fn(row)}</TableCell>
-                
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-            </TableContainer>*/}
+   
             <Box sx={{maxHeight: 400, width: '100%'}} >
       <DataGrid autoHeight sx={{ width: '100%'}}
         rows={rows}
