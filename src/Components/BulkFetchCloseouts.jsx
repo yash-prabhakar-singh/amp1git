@@ -16,7 +16,7 @@ import Sidebar from './Sidebar';
 import { Alert, Box, Button, Card, CardActionArea, Checkbox, CssBaseline, FormControl, FormControlLabel, Grid, InputLabel, MenuItem, Select, Snackbar, Stack, Switch, Tab, Typography, useMediaQuery } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import api from './api';
+import  { fetchDetailscloseoutsgd } from './api';
 import { DataGrid } from '@mui/x-data-grid';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
@@ -54,12 +54,13 @@ export default function Bulkfetchcloseout() {
     const navigate = useNavigate();
     const [plat,setPlat]= React.useState("GoDaddy");
     const [price,setPrice]= React.useState("5");
-    const [num,setNum]= React.useState(0);
-    const [den,setDen]= React.useState(0);
+    const num= React.useRef(0);
+    const den= React.useRef(0);
+
     const [fdets,setFdets]= React.useState([]);
     const [bfdets,setBfdets]= React.useState(false);
     const [value, setValue] = React.useState('');
-    const [psize, setPsize] = React.useState(10);
+    const [psize, setPsize] = React.useState(50);
     const [bool, setBool] = React.useState(false);
     const columns = [
       { field: 'domain', headerName: 'Domain', width: 210 },
@@ -100,6 +101,8 @@ export default function Bulkfetchcloseout() {
    const [checked, setChecked] = React.useState(false);
    const [variant, setVariant] = React.useState("outlined");
  const [open,setOpen]= React.useState(false);
+ const [open1,setOpen1]= React.useState(false);
+
    const switchHandler = (event) => {
      setChecked(event.target.checked);
      console.log(checked);
@@ -112,12 +115,17 @@ export default function Bulkfetchcloseout() {
     if(isMobile)
     return(<Mobile/>);
     else
-    return(<Stack direction='column' spacing={2.5} sx={{width:'100%'}}>
-      
+    return(<Stack direction='column' alignItems='center' spacing={2.5} sx={{width:'100%'}}>
+      <Stack direction='column' spacing={2.5}>
     <Stack direction='row' justifyContent="flex-start">
     <Snackbar open={open} autoHideDuration={2000} anchorOrigin={{ vertical: "top", horizontal: "center" }} onClose={()=>{setOpen(false);}}>
         <Alert  severity="success" sx={{ width: '100%' }}>
-          Details fetched of {num}/{den} domains!
+          Details fetched of {num.current}/{den.current} domains!
+        </Alert>
+      </Snackbar>
+      <Snackbar open={open1} autoHideDuration={2000} anchorOrigin={{ vertical: "top", horizontal: "center" }} onClose={()=>{setOpen1(false);}}>
+        <Alert  severity="error" sx={{ width: '100%' }}>
+        Failed to fetch details.
         </Alert>
       </Snackbar>
         <Typography alignSelf='left'  fontWeight='bold' color='text.primary' >
@@ -155,7 +163,7 @@ export default function Bulkfetchcloseout() {
     <Box 
         component="form"
         sx={{
-           width: '45vw'
+           width: '58vw'
         }}
         noValidate
         autoComplete="off"
@@ -189,10 +197,12 @@ export default function Bulkfetchcloseout() {
             //var a= arr.map((ar)=> {return ar.split(',')});
             console.log(arr);
             if(plat==='GoDaddy')
-            {api.fetchDetailscloseoutsgd(arr).then((Response)=>{console.log(Response.data);setFdets(Response.data); setNum(fdets.length); setDen(arr.length);
-              if(fdets.length!=0)
+            {fetchDetailscloseoutsgd(arr).then((Response)=>{console.log(Response.data);setFdets(Response.data); num.current=Response.data.length; den.current=arr.length
+              if(Response.data.length!=0)
               setOpen(true);
-              setBfdets(true);}).catch((Response)=>{console.log(Response.error);//setBfdets(false);
+              else
+              setOpen1(true);
+              setBfdets(true);}).catch((Response)=>{setOpen1(true);console.log(Response.error);//setBfdets(false);
             });}
           
             setBfdets(true);
@@ -200,45 +210,14 @@ export default function Bulkfetchcloseout() {
             setVariant("contained");
             }}  sx={{backgroundColor:'black' ,alignSelf : "right",fontSize:12, paddingTop:0.1,paddingBottom:0.1,borderRadius:0.2,height:30}} variant="contained">Fetch Details</Button> </Stack>
         </Box>
-        {/*bfdets&&<TableContainer component={Paper}>
-        
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead sx={{fontWeight: 'bold'}}>
-            <TableRow sx={{fontWeight: 'bold'}}>
-              <TableCell sx={{fontWeight: 'bold'}}>domain</TableCell>
-              <TableCell sx={{fontWeight: 'bold'}} align="right">Auction Type</TableCell>
-              <TableCell sx={{fontWeight: 'bold'}} align="right">Current Bid</TableCell>
-              <TableCell sx={{fontWeight: 'bold'}} align="right">Bidders</TableCell>
-              <TableCell sx={{fontWeight: 'bold'}} align="right">Time Left</TableCell>
-              <TableCell sx={{fontWeight: 'bold'}} align="right">Age</TableCell>
-              <TableCell sx={{fontWeight: 'bold'}} align="right">Estibot</TableCell>
-            </TableRow>
-          </TableHead>
-          {<TableBody>
-           
-              <TableRow
-                key={1}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
-               
-                <TableCell align="left">{fdets.domain}</TableCell>
-                <TableCell align="right">{fdets.auctiontype}</TableCell>
-                <TableCell align="right">{fdets.currbid}</TableCell>
-                <TableCell align="right">{fdets.bidders}</TableCell>
-                <TableCell align="right">{fdets.time_left}</TableCell> 
-                <TableCell align="right">{fdets.age}</TableCell>
-                <TableCell align="right">{fdets.estibot}</TableCell>
-              </TableRow>
-          </TableBody>}
-        </Table>
-      </TableContainer>*/}
+        </Stack>
       {bfdets&&<Box sx={{maxHeight: 400, width: 710}} >
       <DataGrid autoHeight sx={{ width: '100%'}}
         rows={fdets}
         columns={columns}
         pageSize={psize}
         onPageSizeChange={(p)=>{setPsize(p)}}
-        rowsPerPageOptions={[5,10,15,25,50]}
+        rowsPerPageOptions={[10,25,50,100,500]}
         disableSelectionOnClick
         components={{
           // Use BaseCheckbox, but make sure your custom Checkbox expects props to match "CheckboxProps" from @mui/material else functionality will be lost.

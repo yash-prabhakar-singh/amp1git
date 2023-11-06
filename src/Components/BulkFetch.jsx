@@ -16,7 +16,7 @@ import Sidebar from './Sidebar';
 import { Box, Button, Card, CardActionArea, Checkbox, CssBaseline, FormControl, FormControlLabel, Grid, InputLabel, MenuItem, Select, Stack, Switch, Tab, Typography } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import api from './api';
+import { fetchDetailsdc, fetchDetailsdyna } from './api';
 import { DataGrid } from '@mui/x-data-grid';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
@@ -181,11 +181,11 @@ export default function BulkFetch() {
             //var a= arr.map((ar)=> {return ar.split(',')});
             console.log(arr);
             if(plat==='Dynadot')
-            {api.fetchDetailsdyna(arr).then((Response)=>{console.log(Response.data); setFdets(Response.data);setBfdets(true);}).catch((Response)=>{console.log(Response.error);//setBfdets(false);
+            {fetchDetailsdyna(arr).then((Response)=>{console.log(Response.data); setFdets(Response.data);setBfdets(true);}).catch((Response)=>{console.log(Response.error);//setBfdets(false);
             });}
             else if(plat==='Dropcatch')
             {
-              api.fetchDetailsdc(arr).then((Response)=>{console.log(Response.data); setFdets(Response.data);setBfdets(true);}).catch((Response)=>{console.log(Response.error);});
+              fetchDetailsdc(arr).then((Response)=>{console.log(Response.data); setFdets(Response.data);setBfdets(true);}).catch((Response)=>{console.log(Response.error);});
             }
             setBfdets(true);
             setVariant("contained");

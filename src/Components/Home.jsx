@@ -17,7 +17,7 @@ import { Box, Button, Card, CardActionArea, CssBaseline, FormControl, FormContro
 import { createTheme, ThemeProvider } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import api from './api';
+import api, { schedulebiddc } from './api';
 //import { TabContext, TabList, TabPanel } from '@mui/lab';
 
 
@@ -151,7 +151,7 @@ export default function Home() {
 
               if(!checked)
               {
-                api.schedulebiddc(a).then((Response)=>{console.log(Response.data);}).catch((error)=>console.log(error))
+                schedulebiddc(a).then((Response)=>{console.log(Response.data);}).catch((error)=>console.log(error))
               }
             }
             }} sx={{backgroundColor:'black' ,alignSelf : "right",fontSize:12, paddingTop:0.1,paddingBottom:0.1,borderRadius:0.2,height:30}} variant="contained">Bulk Bid</Button>

@@ -20,7 +20,7 @@ import { useState } from 'react';
 import DTable from './ScheduledTable';
 import RTable from './RTable';
 import { useEffect } from 'react';
-import api from './api';
+import  { getnotifs } from './api';
 //import { TabContext, TabList, TabPanel } from '@mui/lab';
 
 
@@ -29,7 +29,7 @@ export default function Notifications() {
 
   let [rows,setRows]= React.useState([]);
 
- useEffect(()=>{api.getnotifs().then((response)=>{setRows(response.data)}).catch(err=>console.log(err))},[]);
+ useEffect(()=>{getnotifs().then((response)=>{setRows(response.data)}).catch(err=>console.log(err))},[]);
  
   const theme = createTheme({
     palette: {
@@ -61,25 +61,27 @@ export default function Notifications() {
    
     <Stack direction='column' alignItems='flex-start' sx={{width:'100%'}} spacing={2.5}>
     <Typography  fontWeight='bold' color='primary.main' align='left'>Notifications</Typography>
-    <Box>
+    <Box sx={{width:'100%'}}>
       
       <List sx={{
         width: '100%',
         //maxWidth: 360,
         bgcolor: 'background.paper',
         position: 'relative',
-        overflow: 'auto',
+        //overflow: 'auto',
         maxHeight: 500,
         '& ul': { padding: 0 },
       }} disablePadding>
         { rows.map((row)=>(
           <React.Fragment>
+            <Card variant='outlined' sx={{marginY:1, paddingLeft:1}}>
         <ListItem disableGutters>
           <ListItemText secondary={row.message}/>
            
           
         </ListItem>
-        <Divider  component="li" />
+        </Card>
+       
         </React.Fragment>
 ))}
         </List>

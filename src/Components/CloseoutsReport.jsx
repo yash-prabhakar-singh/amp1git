@@ -20,7 +20,7 @@ import { useState } from 'react';
 import DTable from './ScheduledTable';
 import RTable from './RTable';
 import { DataGrid } from '@mui/x-data-grid';
-import api from './api';
+import api, { getcompletedcloseouts } from './api';
 //import { TabContext, TabList, TabPanel } from '@mui/lab';
 
 
@@ -60,7 +60,7 @@ export default function CloseoutsReport() {
           else
           return "No";}
   
-          const [psize, setPsize] = React.useState(10);
+          const [psize, setPsize] = React.useState(50);
   
       const [rows, setRows] = React.useState([]);
  
@@ -89,24 +89,29 @@ export default function CloseoutsReport() {
     }
     );
 
-    React.useEffect(()=>{api.getcompletedcloseouts().then((response)=>{setRows(response.data); console.log(response.data)}).catch((Error)=>console.log(Error))},[]);
+    React.useEffect(()=>{getcompletedcloseouts().then((response)=>{setRows(response.data); console.log(response.data)}).catch((Error)=>console.log(Error))},[]);
 
 
   return (
    
-    <Stack direction='column'  sx={{width:'100%'}} spacing={3}>
+    <Stack direction='column' alignItems='center' sx={{width:'100%'}} spacing={3}>
      <Box>
       <Stack direction='column' alignItems='flex-start' spacing={2.5}>
         <Typography alignSelf='left' fontWeight='bold' color='text.primary'>
             Closeouts' Report
         </Typography>
-      <Box sx={{maxHeight: 400, width: 850}} >
+      <Box sx={{width: 850}} >
       <DataGrid autoHeight sx={{ width: '100%'}}
         rows={rows}
         columns={columns}
         pageSize={psize}
         onPageSizeChange={(p)=>{setPsize(p)}}
-        rowsPerPageOptions={[5,10,15,25,50]}
+        rowsPerPageOptions={[10,25,50,100,500]}
+        initialState={{
+          sorting: {
+            sortModel: [{ field: 'endTimeist', sort: 'desc' }],
+          },
+        }}
         disableSelectionOnClick
         //checkboxSelection
         //onSelectionModelChange={itm => console.log(itm)}

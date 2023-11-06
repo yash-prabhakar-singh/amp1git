@@ -1,7 +1,7 @@
 import { Box, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
 import * as React from 'react';
 import axios from 'axios';
-import api from './api';
+import { getplacedbids } from './api';
 import { DataGrid } from '@mui/x-data-grid';
 
 
@@ -51,7 +51,7 @@ export default function PlacedTable() {
      
     ];
     
-React.useEffect(()=>{api.getplacedbids().then((response)=>{setRows(response.data);}).catch((Error)=>console.log(Error))},[]);
+React.useEffect(()=>{getplacedbids().then((response)=>{setRows(response.data);}).catch((Error)=>console.log(Error))},[]);
   
 //React.useEffect(()=>{setCbid(rows.map(axios.get("https://api.dynadot.com/api3.json").then((response)=>{var a=JSON.parse(response.data); return a.Response.ResponseCode})))});
 

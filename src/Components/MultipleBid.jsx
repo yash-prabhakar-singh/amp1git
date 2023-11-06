@@ -17,7 +17,8 @@ import { Alert, Box, Button, Card, CardActionArea, CssBaseline, FormControl, For
 import { createTheme, ThemeProvider } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import api from './api';
+import api, { instantbiddc, instantbiddyna, instantbidgd, instantbidnc, schedulebiddc, schedulebiddyna, schedulebidgd, schedulebidnc, schedulebidns } from './api';
+import { canBid, canBidDC, canBidDD, canBidGD, canBidNC, canBidNS } from './msalService';
 //import { TabContext, TabList, TabPanel } from '@mui/lab';
 
 
@@ -59,9 +60,14 @@ export default function Mbid() {
     const [bool,setBool]=useState(false);
     const [open,setOpen]=useState(false);
     const [open1,setOpen1]=useState(false);
-   const [res,setRes]=useState([]);
+    const [open2,setOpen2]=useState(false);
 
-   React.useEffect(() => { console.log(plat);console.log(plat);}, [plat])
+   const res= React.useRef([]);const err= React.useRef("");
+   React.useEffect(() => { if(canBidDD())
+  setPlat('Dynadot'); else if(canBidDC())  setPlat('Dropcatch');
+  else if(canBidNC())  setPlat('Namecheap');
+  else if(canBidGD())  {setPlat('GoDaddy'); console.log("GoDaddy")}
+  else if(canBidNS())  setPlat('Namesilo');}, [])
    React.useEffect(() => {}, [bool])
   const handleChange = (event) => {
     setValue(event.target.value);
@@ -80,12 +86,17 @@ export default function Mbid() {
     <Stack direction='row' justifyContent="flex-start">
     <Snackbar open={open} autoHideDuration={4000} anchorOrigin={{ vertical: "top", horizontal: "center" }} onClose={()=>{setOpen(false);}}>
         <Alert onClose={()=>{setOpen(false);}} severity="info" sx={{ width: '100%' }}>
-          Bid placed successfully for {res[0]}/{res[1]} domains.
+          Bid placed successfully for {res.current[0]}/{res.current[1]} domains.
         </Alert>
       </Snackbar>
       <Snackbar open={open1} anchorOrigin={{ vertical: "top", horizontal: "center" }} autoHideDuration={4000} onClose={()=>{setOpen1(false);}}>
         <Alert onClose={()=>{setOpen1(false);}} severity="info" sx={{ width: '100%' }}>
-         Bid scheduled successfully for {res[0]}/{res[1]} domains.
+         Bid scheduled successfully for {res.current[0]}/{res.current[1]} domains.
+        </Alert>
+      </Snackbar>
+      <Snackbar open={open2} anchorOrigin={{ vertical: "top", horizontal: "center" }} autoHideDuration={4000} onClose={()=>{setOpen2(false);}}>
+        <Alert onClose={()=>{setOpen2(false);}} severity="error" sx={{ width: '100%' }}>
+         {err.current}
         </Alert>
       </Snackbar>
         <Typography alignSelf='left' fontWeight='bold' color='text.primary' >
@@ -109,10 +120,11 @@ export default function Mbid() {
           label="Platforms"
           onChange={(event)=>{setPlat(event.target.value);}}
         >
-          <MenuItem value={"Dynadot"}>Dynadot</MenuItem>
-          <MenuItem value={"GoDaddy"}>GoDaddy</MenuItem>
-          <MenuItem value={"Dropcatch"}>Dropcatch</MenuItem>
-          <MenuItem value={"Namecheap"}>Namecheap</MenuItem>
+          {canBidDD()&&<MenuItem value={"Dynadot"}>Dynadot</MenuItem>}
+          {canBidGD()&&<MenuItem value={"GoDaddy"}>GoDaddy</MenuItem>}
+          {canBidDC()&&<MenuItem value={"Dropcatch"}>Dropcatch</MenuItem>}
+          {canBidNC()&&<MenuItem value={"Namecheap"}>Namecheap</MenuItem>}
+          {canBidNS()&&<MenuItem value={"Namesilo"}>Namesilo</MenuItem>}
         </Select>
       </FormControl>
       </Stack>
@@ -120,7 +132,7 @@ export default function Mbid() {
     <Box 
         component="form"
         sx={{
-           width: '45vw'
+           width: '58vw'
         }}
         noValidate
         autoComplete="off"
@@ -156,10 +168,10 @@ Domain,Bid"
             if(plat==="Dynadot")
             {
             if(!checked)
-            {api.schedulebiddyna(a).then((Response)=>{console.log(Response.data); setRes(Response.data); setOpen1(true);}).catch(error=>console.log(error));}
+            {schedulebiddyna(a).then((Response)=>{console.log(Response.data);if(Response.data[0]!=0) {res.current=Response.data; setOpen1(true);} else {err.current="Bid not scheduled for any of domains"; setOpen2(true)}}).catch(error=>{err.current="Bids not scheduled, SERVER ERROR!";setOpen2(true);console.log(error)});}
             else
             {
-                api.instantbiddyna(a).then((Response)=>{console.log(Response.data); setRes(Response.data);setOpen(true);}).catch(error=>console.log(error));
+                instantbiddyna(a).then((Response)=>{console.log(Response.data); if(Response.data[0]!=0) {res.current=Response.data; setOpen(true);} else {err.current="Bid not placed for any of domains"; setOpen2(true)}}).catch(error=>{err.current="Bids not placed, SERVER ERROR!";setOpen2(true);console.log(error)});
                
             }}
             else if(plat==="Dropcatch")
@@ -168,11 +180,11 @@ Domain,Bid"
 
               if(!checked)
               {
-                api.schedulebiddc(a).then((Response)=>{console.log(Response.data); setRes(Response.data); setOpen1(true);}).catch((error)=>console.log(error))
+                schedulebiddc(a).then((Response)=>{console.log(Response.data); if(Response.data[0]!=0) {res.current=Response.data; setOpen1(true);} else {err.current="Bid not scheduled for any of domains"; setOpen2(true)}}).catch(error=>{err.current="Bids not scheduled, SERVER ERROR!";setOpen2(true);console.log(error)});
               }
               else
               {
-                api.instantbiddc(a).then((Response)=>{console.log(Response.data); setRes(Response.data); setOpen(true);}).catch((error)=>console.log(error))
+                instantbiddc(a).then((Response)=>{console.log(Response.data);if(Response.data[0]!=0) {res.current=Response.data; setOpen(true);} else {err.current="Bid not placed for any of domains"; setOpen2(true)}}).catch(error=>{err.current="Bids not placed, SERVER ERROR!";setOpen2(true);console.log(error)});
               }
             }
 
@@ -182,11 +194,11 @@ Domain,Bid"
 
               if(!checked)
               {
-                api.schedulebidnc(a).then((Response)=>{console.log(Response.data); setRes(Response.data); setOpen1(true);}).catch((error)=>console.log(error))
+                schedulebidnc(a).then((Response)=>{console.log(Response.data);if(Response.data[0]!=0) {res.current=Response.data; setOpen1(true);} else {err.current="Bid not scheduled for any of domains"; setOpen2(true)}}).catch(error=>{err.current="Bids not scheduled, SERVER ERROR!";setOpen2(true);console.log(error)});
               }
               else
               {
-                api.instantbidnc(a).then((Response)=>{console.log(Response.data); setRes(Response.data); setOpen(true);}).catch((error)=>console.log(error))
+                instantbidnc(a).then((Response)=>{console.log(Response.data);if(Response.data[0]!=0) {res.current=Response.data; setOpen(true);} else {err.current="Bid not placed for any of domains"; setOpen2(true)}}).catch(error=>{err.current="Bids not placed, SERVER ERROR!";setOpen2(true);console.log(error)});
               }
             }
             else if(plat==="GoDaddy")
@@ -195,16 +207,29 @@ Domain,Bid"
 
               if(!checked)
               {
-                api.schedulebidgd(a).then((Response)=>{console.log(Response.data); setRes(Response.data); setOpen1(true);}).catch((error)=>console.log(error))
+                schedulebidgd(a).then((Response)=>{console.log(Response.data);if(Response.data[0]!=0) {res.current=Response.data; setOpen1(true);} else {err.current="Bid not scheduled for any of domains"; setOpen2(true)}}).catch(error=>{err.current="Bids not scheduled, SERVER ERROR!";setOpen2(true);console.log(error)});
               }
               else
               {
-                api.instantbidgd(a).then((Response)=>{console.log(Response.data); setRes(Response.data); setOpen(true);}).catch((error)=>console.log(error))
+                instantbidgd(a).then((Response)=>{console.log(Response.data);if(Response.data[0]!=0) {res.current=Response.data; setOpen(true);} else {err.current="Bid not placed for any of domains"; setOpen2(true)}}).catch(error=>{err.current="Bids not placed, SERVER ERROR!";setOpen2(true);console.log(error)});
+              }
+            }
+            else if(plat==="Namesilo")
+            {
+              console.log(plat);
+
+              if(!checked)
+              {
+                schedulebidns(a).then((Response)=>{console.log(Response.data);if(Response.data[0]!=0) {res.current=Response.data; setOpen1(true);} else {err.current="Bid not scheduled for any of domains"; setOpen2(true)}}).catch(error=>{err.current="Bids not scheduled, SERVER ERROR!";setOpen2(true);console.log(error)});
+              }
+              else
+              {
+                //instantbidgd(a).then((Response)=>{console.log(Response.data); res.current=Response.data; setOpen(true);}).catch((error)=>console.log(error))
               }
             }
 
             setValue('');
-            }} 
+            }}  
             sx={{backgroundColor:'black' , alignSelf:"right", fontSize:12, paddingTop:0.1,paddingBottom:0.1,borderRadius:0.2,height:30}} variant="contained">Bulk Bid</Button>
                     <FormControlLabel  control={<Switch color='primary' sx={{}} checked={checked} onChange={switchHandler}/>} label="Instant Bid" />
 

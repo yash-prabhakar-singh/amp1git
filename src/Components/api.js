@@ -1,103 +1,217 @@
-import axios from "axios";
+import axiosInstance from "./axiosInstance";
+//import axios from "axios";
+const url="http://localhost:88";
+ //url="https://23.235.218.118:88";
+ //url="http://ded3450.inmotionhosting.com:88";
+ //url="https://api.auctionhacker.com";i
+ //url="http://api:8443";
 
-class api
-{ key="8B8Y70UXd7o7D58A8rh7N829B629L9H8W9G7e7q9W8d";
-
-  url="http://localhost:8443";
- //url="http://139.84.171.248:8443";
-  //url="http://api:8443";
-
-
-getDetails(domain)
+ export const sample=()=>
 {
-   return axios.get('https://api.dynadot.com/api3.json'/*,{ headers: {
-"Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept" }, params:{ key: this.key, command: "get_auction_details", domain : domain, currency : "usd"}}*/)
+   return axiosInstance.get(`/fetch123`);
 }
 
-fetchDetailsdyna(domains)
+export const getUsers=()=>
+{
+   return axiosInstance.get(`/users`);
+}
+
+
+export const getOtp=()=>
+{
+   return axiosInstance.get('/getotp')
+}
+export const getUser=()=>
+{
+   return axiosInstance.get('/getuser')
+}
+
+export const syncUser=()=>
+{
+   return axiosInstance.get('/syncuser')
+}
+
+export const cancelBidDd=(domain, auctionId)=>
+{
+   return axiosInstance.get(`/cancel/dd`,{params:{domain,auctionId}});
+}
+
+export const deleteUser=(id)=>
+{
+   return axiosInstance.get(`/deleteuser`,{params:{id}});
+}
+
+
+export const getLiveFilterSettings=()=>
+{
+return axiosInstance.get(`/getlivefilters`);
+}
+
+
+export const setLiveFilterSettings=(noHyphens,noNumbers,domainLength,text1,text2,text3,text4,text5,text6,text7,restrictedExts)=>
+{
+   let wrapper={noHyphens,noNumbers,domainLength,diff_exts_ests:[text1,text2,text3,text4,text5,text6],new_ests:text7,restrictedExts};
+   console.log(wrapper);
+return axiosInstance.post(`/postlivefilters`,wrapper);
+}
+
+export const cancelBidDc=(domain, auctionId)=>
+{
+   return axiosInstance.get(`/cancel/dc`,{params:{domain,auctionId}});
+}
+
+export const cancelBidNs=(domain, auctionId)=>
+{
+   return axiosInstance.get(`/cancel/ns`,{params:{domain,auctionId}});
+}
+
+export const cancelBidGd=(domain)=>
+{
+   return axiosInstance.get(`/cancel/gd`,{params:{domain}});
+}
+
+export const cancelBidNc=(domain,ncid)=>
+{
+   
+   return axiosInstance.get(`/cancel/nc`,{params:{domain, ncid}});
+}
+
+
+export const getDetails=(domain)=>
+{
+   return axiosInstance.get('https://api.dynadot.com/api3.json',{ headers: {
+"Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept" }, params:{ key: this.key, command: "get_auction_details", domain : domain, currency : "usd"}})
+}
+
+export const fetchDetailsdyna=(domains,b)=>
 {//fetchdetailsdyna
-   return axios.post(`${this.url}/fetchdetailsdyna`,domains)
+   let body={domains:domains,watch:b}
+   return axiosInstance.post(`/fetchdetailsdyna`,body)
 }
 
-fetchgdv(domains)
-{
-   return axios.post(`${this.url}/getgdvs`,domains)
+export const fetchDetailsns=(domains,b)=>
+{//fetchdetailsdyna
+   let body={domains:domains,watch:b}
+   return axiosInstance.post(`/bulkfetchns`,body)
 }
 
-fetchDetailsgodaddy(domains)
+export const fetchDetailsEst=(ids)=>
 {
-   return axios.post(`${this.url}/bulkfetchgodaddy`,domains)
+   return axiosInstance.post(`/fetchwithest`,ids)
 }
 
-fetchDetailscloseoutsgd(domains)
+export const fetchgdv=(domains)=>
 {
-   return axios.post(`${this.url}/bulkfetchcloseoutsgodaddy`,domains)
+   return axiosInstance.post(`/getgdvs`,domains)
+}
+
+export const fetchest=(domains)=>
+{
+   return axiosInstance.post(`/bulkfetchest`,domains)
 }
 
 
-   fetchDetailsnc(domains)
-{
-   return axios.post(`${this.url}/fetchdetailsnc`,domains)
+export const fetchDetailsgodaddy=(domains,b)=>
+{let body={domains:domains,watch:b}
+   return axiosInstance.post(`/bulkfetchgodaddy`,body)
 }
 
-fetchDetailsdc(domains)
+export const fetchDetailscloseoutsgd=(domains)=>
 {
-   return axios.post(`${this.url}/fetchdetailsdc`,domains)
+   return axiosInstance.post(`/bulkfetchcloseoutsgodaddy`,domains)
 }
 
-getcurrauctions()
-{
-   return axios.get(`${this.url}/getcurrauctions`);
+
+export const fetchDetailsnc=(domains,b)=>
+{let body={domains:domains,watch:b}
+   return axiosInstance.post(`/fetchdetailsnc`,body)
 }
 
-getscheduledauctions()
-{
-   return axios.get(`${this.url}/getscheduledbids`);
-}
-getscheduledcloseouts()
-{
-   return axios.get(`${this.url}/getscheduledcloseouts`);
+export const fetchDetailsdc=(domains,b)=>
+{let body={domains:domains,watch:b}
+   return axiosInstance.post(`/fetchdetailsdc`,body)
 }
 
-getcompletedcloseouts()
+export const getcurrauctions=()=>
 {
-   return axios.get(`${this.url}/getcompletedcloseouts`);
-}
-getplacedbids()
-{
-   return axios.get(`${this.url}/getplacedbids`);
+   return axiosInstance.get(`/getcurrauctions`);
 }
 
-startLive()
+export const getscheduledauctions=()=>
 {
-   return axios.get(`${this.url}/startlive`);
+   return axiosInstance.get(`/getscheduledbids`);
+}
+export const getscheduledcloseouts=()=>
+{
+   return axiosInstance.get(`/getscheduledcloseouts`);
 }
 
-getLive()
+export const getcompletedcloseouts=()=>
 {
-   return axios.get(`${this.url}/detectlive`);
+   return axiosInstance.get(`/getcompletedcloseouts`);
+}
+export const getplacedbids=()=>
+{
+   return axiosInstance.get(`/getplacedbids`);
 }
 
-startLivenc()
+export const startLive=()=>
 {
-   return axios.get(`${this.url}/startlivenc`);
+   return axiosInstance.get(`/startlive`);
 }
 
-getLivenc()
+export const getLive=()=>
 {
-   return axios.get(`${this.url}/getlivenc`);
+  return axiosInstance.get(`/detectlive`);
+}
+export const getLiveUpdated=()=>
+{
+  return axiosInstance.get(`/detectliveupdated`);
+}
+export const startLivenc=()=>
+{
+   return axiosInstance.get(`/startlivenc`);
 }
 
-getwatchlist()
+export const getLivenc=()=>
 {
-   return axios.get(`${this.url}/getwatchlist`);
-}
-getwatchlistCloseout()
-{
-   return axios.get(`${this.url}/getWatchlistCloseouts`);
+   return axiosInstance.get(`/getlivenc`);
 }
 
-watchlist(ids, rows)
+export const getLivedc=()=>
+{
+   return axiosInstance.get(`/getlivedc`);
+}
+
+export const getLivencUpdated=()=>
+{
+   return axiosInstance.get(`/getlivencupdated`);
+}
+
+export const getLivedcUpdated=()=>
+{
+   return axiosInstance.get(`/getlivedcupdated`);
+}
+
+
+export const getLivens=()=>
+{
+   return axiosInstance.get(`/getlivens`);
+}
+export const getLivegd=()=>
+{
+   return axiosInstance.get(`/getlivegd`);
+}
+export const getwatchlist=()=>
+{
+   return axiosInstance.get(`/getwatchlist`);
+}
+export const getwatchlistCloseout=()=>
+{
+   return axiosInstance.get(`/getWatchlistCloseouts`);
+}
+
+export const watchlist=(ids, rows)=>
 {
    ids= ids.map((id)=>{return Number(id);})
    const set = new Set(ids);
@@ -106,10 +220,30 @@ watchlist(ids, rows)
    console.log(ids)
    console.log(nids)
    const arr=[ids,nids];
-   return axios.put(`${this.url}/watchlisted`,arr);
+   return axiosInstance.put(`/watchlisted`,arr);
 }
 
-watchlistcloseouts(ids, rows)
+export const watchlistSingle=(id)=>
+{
+   console.log(id); 
+   return axiosInstance.get(`/watchlistsingle`,{params:{id}});
+}
+
+export const removeWatchlistSingle=(id)=>
+{
+   console.log(id); 
+   return axiosInstance.get(`/removewatchlistsingle`,{params:{id}});
+}
+
+export const removeWatchlist=(ids)=>
+{
+   //console.log(ids); 
+   ids= ids.map((id)=>{return Number(id);})
+   return axiosInstance.put(`/removewatchlist`,ids);
+}
+
+
+export const watchlistcloseouts=(ids, rows)=>
 {
    ids= ids.map((id)=>{return Number(id);})
    const set = new Set(ids);
@@ -118,82 +252,137 @@ watchlistcloseouts(ids, rows)
    console.log(ids)
    console.log(nids)
    const arr=[ids,nids];
-   return axios.put(`${this.url}/watchlistedcloseout`,arr);
+   return axiosInstance.put(`/watchlistedcloseout`,arr);
 }
 
-
-getcompletedauctions()
+export const removeCloseoutWatchlist=(ids)=>
 {
-   return axios.get(`${this.url}/getcompletedauctions`);
+   console.log(ids); 
+   ids= ids.map((id)=>{return Number(id);})
+   return axiosInstance.put(`/removecloseoutwatchlist`,ids);
 }
 
-getnotifs()
+export const getcompletedauctions=()=>
 {
-   return axios.get(`${this.url}/getnotifications`);
+   return axiosInstance.get(`/getcompletedauctions`);
 }
 
-sample()
+export const getnotifs=()=>
 {
-   return axios.get(`${this.url}/sample`);
+   return axiosInstance.get(`/getnotifications`);
 }
 
-schedulebiddc(ddlist)
+export const getnotifstoday=()=>
 {
-return axios.post(`${this.url}/bulkbidscheduledc1`,ddlist);
+   return axiosInstance.get(`/getnotificationstoday`);
 }
 
-instantbiddc(ddlist)
+export const sample1=()=>
 {
-return axios.post(`${this.url}/bulkbiddc`,ddlist);
+   return axiosInstance.get(`/sample`);
 }
 
-schedulebidgd(ddlist)
+export const schedulebiddc=(ddlist)=>
 {
-return axios.post(`${this.url}/bulkbidschedulegodaddy`,ddlist);
+return axiosInstance.post(`/bulkbidscheduledc1`,ddlist);
 }
 
-instantbidgd(ddlist)
+export const instantbiddc=(ddlist)=>
 {
-return axios.post(`${this.url}/bulkbidgodaddy`,ddlist);
+return axiosInstance.post(`/bulkbiddc`,ddlist);
 }
 
-schedulecloseoutgd(closeout, price)
+export const schedulebidgd=(ddlist)=>
+{
+return axiosInstance.post(`/bulkbidschedulegodaddy`,ddlist);
+}
+
+export const instantbidgd=(ddlist)=>
+{
+return axiosInstance.post(`/bulkbidgodaddy`,ddlist);
+}
+
+export const schedulecloseoutgd=(closeout, price)=>
 {
    let closeouts={closeout,price}
-return axios.post(`${this.url}/schedulegodaddycloseouts`,closeouts);
+return axiosInstance.post(`/schedulegodaddycloseouts`,closeouts);
 }
 
-instantcloseoutgd(closeout,price)
+export const instantcloseoutgd=(closeout,price)=>
 {
    let closeouts={closeout,price}
-return axios.post(`${this.url}/buygodaddycloseouts`,closeouts);
+return axiosInstance.post(`/buygodaddycloseouts`,closeouts);
 }
-
-schedulebidnc(ddlist)
+export const schedulecloseoutgd1=(closeouts)=>
 {
-return axios.post(`${this.url}/bulkschedulenc`,ddlist);
+return axiosInstance.post(`/schedulegodaddycloseouts1`,closeouts);
 }
 
-instantbidnc(ddlist)
+export const instantcloseoutgd1=(closeouts)=>
 {
-return axios.post(`${this.url}/bulkbidnc`,ddlist);
+return axiosInstance.post(`/buygodaddycloseouts1`,closeouts);
 }
 
-instantbidd(ddlist)
+export const schedulebidnc=(ddlist)=>
 {
-return axios.post(`${this.url}/bulkbidd`,ddlist);
+   return axiosInstance.post(`/bulkschedulenc`,ddlist);
 }
 
-schedulebiddyna(ddlist)
+export const instantbidnc=(ddlist)=>
+{
+return axiosInstance.post(`/bulkbidnc`,ddlist);
+}
+
+export const instantbidd=(ddlist)=>
+{
+return axiosInstance.post(`/bulkbidd`,ddlist);
+}
+
+export const schedulebiddyna=(ddlist)=>
 {//postDomains
-return axios.post(`${this.url}/postDomains`,ddlist);
+return axiosInstance.post(`/postDomains`,ddlist);
 }
 
-instantbiddyna(ddlist)
+export const schedulebidns=(ddlist)=>
+{//postDomains
+return axiosInstance.post(`/bulkschedulens`,ddlist);
+}
+
+export const schedulebiddynasingle=(domain,auctionId,bid)=>
 {
-return axios.post(`${this.url}/postDomainsinstant`,ddlist);
+return axiosInstance.get(`/schedulesingledyna`,{params:{domain,auctionId ,bid}});
+}
+export const schedulebiddcsingle=(domain,auctionId,bid)=>
+{
+return axiosInstance.get(`/schedulesingledc`,{params:{domain,auctionId ,bid}});
+}
+export const schedulebidgdsingle=(domain,auctionId,bid)=>
+{
+return axiosInstance.get(`/schedulesinglegd`,{params:{domain,id:auctionId,price:bid}});
+}
+export const schedulebidncsingle=(domain,ncid,bid)=>
+{
+return axiosInstance.get(`/schedulesinglenc`,{params:{domain,ncid,bid}});
+}
+export const schedulebidnssingle=(domain,auctionId,bid)=>
+{
+return axiosInstance.get(`/schedulesinglens`,{params:{id:auctionId,domain,bid}});
+}
+export const instantbiddyna=(ddlist)=>
+{
+return axiosInstance.post(`/postDomainsinstant`,ddlist);
+}
+export const backorderstandard=(ddlist)=>
+{
+return axiosInstance.post(`/placebackorderstandard`,ddlist);
 }
 
+export const backorderdiscount=(ddlist)=>
+{
+return axiosInstance.post(`/placebackorderdiscount`,ddlist);
 }
-
-export default new api();
+export const getTargetsHighest=()=>
+{
+return axiosInstance.get(`/gettargetshighest`);
+}
+;

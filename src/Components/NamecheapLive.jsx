@@ -1,6 +1,6 @@
 //import { createTheme } from "@mui/material";
 import Sidebar from './Sidebar';
-import { Box, Button, Card, CardActionArea, CssBaseline, FormControl, FormControlLabel, Grid, InputLabel, MenuItem, Select, Stack, Switch, Tab, Typography } from '@mui/material';
+import { Alert, Box, Button, Card, CardActionArea, CssBaseline, FormControl, FormControlLabel, Grid, IconButton, InputLabel, MenuItem, Select, Snackbar, Stack, Switch, Tab, TextField, Tooltip, Typography } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
@@ -9,13 +9,42 @@ import ScheduledTable from './ScheduledTable';
 import PlacedTable from './PlacedTable';
 import * as React from 'react';
 import { useEffect } from 'react';
-import api from './api';
+import { getLivenc, getLivencUpdated, schedulebidncsingle } from './api';
 import { DataGrid } from '@mui/x-data-grid';
+import { Cached, Gavel, Replay } from '@mui/icons-material';
+import { canBidNCLive } from './msalService';
 
 export default function NamecheapLive() {
 
     let [rows,setRows]= React.useState([]);
-    let [psize,setPsize]= React.useState(10);
+    let [psize,setPsize]= React.useState(50);
+    let [rowsf,setRowsf]= React.useState([]);
+    const [plat,setPlat]= useState("All");
+    const [checked, setChecked] = useState(false);
+    const switchHandler = (event) => {
+      setChecked(event.target.checked);
+      console.log(checked)
+    };
+    const res= React.useRef("");
+    const [open, setOpen] = useState(false);
+    const [open1,setOpen1]= React.useState(false);
+    useEffect(() => {
+      if(plat==='All')
+      {if(!checked)setRowsf(rows);
+      else setRowsf(rows.filter((row)=>{if(row.highlight) return row;}))}
+      else if(plat==='Bubbles')
+      {if(!checked)setRowsf(rows.filter((row)=>{if(row.live) return row;}));
+      else setRowsf(rows.filter((row)=>{if(row.highlight&&row.live) return row;}))}
+      else if(plat==='Initial List')
+      {if(!checked)setRowsf(rows.filter((row)=>{if(row.initialList) return row;}));
+      else setRowsf(rows.filter((row)=>{if(row.highlight&&row.initialList) return row;}))}
+      else if(plat==='End List')
+      {if(!checked)setRowsf(rows.filter((row)=>{if(row.endList) return row;}));
+      else setRowsf(rows.filter((row)=>{if(row.highlight&&row.endList) return row;}))}
+    
+    }
+    , [plat,checked,rows]);
+    
     //let [timer,setTimer]= React.useState();
  // useEffect(()=>{api.getLive().then((response)=>{setRows(response.data)}).catch((error)=>console.log(error))},[])
   /*setInterval(() => {console.log("live");
@@ -33,19 +62,41 @@ export default function NamecheapLive() {
  }
  */
  useEffect(() => {
-  api.getLivenc().then((res)=>{console.log(res.data); setRows(res.data);}).catch((err)=>console.log(err));
-	let interval = setInterval(() => {
-		api.getLivenc().then((res)=>{console.log(res.data); setRows(res.data);}).catch((err)=>console.log(err));
-	}, 30000);
-	return () => {
-		clearInterval(interval);
-	};
+  getLivenc().then((res)=>{console.log(res.data); setRows(res.data);setRowsf(res.data)}).catch((err)=>console.log(err));
+
 }, []);
 
  
 
  //clearTimeout(timerr);
+ const MaxBid=(props)=>{
+  const [mb,setMb]=React.useState(props.currbid);
+  const handleChange = (event) => {
+    setMb(event.target.value);
+  };
+const disabled=()=>{if(mb>props.currbid) return false; else return true;}
+const disabledb=()=>{if(canBidNCLive()) return false; else return true;}
 
+  return(<Stack direction='row' spacing={2}><TextField size='small'  sx={{width:95}} onChange={handleChange} variant='outlined' type='number' defaultValue={mb} /><IconButton size='small' disabled={disabled()||disabledb()} onClick={()=>{console.log(mb);
+    schedulebidncsingle(props.domain,props.ncid,mb).then((response)=>{if(response.data==0){
+      res.current="Bid scheduled for "+props.domain+" at max price "+mb;
+      setOpen(true);
+    }
+  else if(response.data>2){
+    res.current="Bid not scheduled for "+props.domain+" as price: "+mb+" is lower than min price of "+response.data;
+    setOpen1(true); 
+  }
+  else{
+    res.current="Bid not scheduled for "+props.domain+", may be auction has ended";
+    setOpen1(true); 
+  }}).catch((error)=>{console.log(error); res.current="Bid not scheduled for "+props.domain+", Server Error!";
+  setOpen1(true);})
+} }  sx={{
+    "&.Mui-disabled": {
+      color: "grey"
+    },color:'green'
+  }} ><Gavel/></IconButton></Stack>);
+}  
 
   const columns = [
    // { field: 'platform', headerName: 'Platform', width: 110 },
@@ -63,13 +114,19 @@ export default function NamecheapLive() {
       width: 70,
     },
     {
+      field: 'estibotValue',
+      headerName: 'EST',
+      type: 'number',
+      width: 70,
+    },
+    {
       field: 'addtime',
       headerName: 'Add Time',
       //description: 'This column has a value getter and is not sortable.',
       //sortable: false,
       type: 'date-time',
       width: 90,
-      valueGetter: (params) =>{return params.row.addtime.substring(11,16)}
+      valueGetter: (params) =>{return params.row.addtime?params.row.addtime.substring(11,16):"Live Start"}
     },
     {
       field: 'time_left',
@@ -80,6 +137,13 @@ export default function NamecheapLive() {
       width: 120,
       
     },
+    ,
+    {
+        field:'maxbid',
+        headerName:'Our Max Bid',
+        renderCell: (params)=><MaxBid currbid={params.row.price} domain={params.row.name} auctionId={params.row.id} />,
+      width:170
+    }
    
   ];
   
@@ -111,13 +175,47 @@ export default function NamecheapLive() {
     return (
     
       <Stack direction='column' alignItems='flex-start' sx={{width:'100%'}} spacing={2.5}>
-      <Typography alignSelf='left' fontWeight='bold' color='text.primary' >
+      <Stack direction='row' spacing={2.5} width={835} ><Typography alignSelf='left' fontWeight='bold' color='text.primary' >
             Namecheap Live
         </Typography>
-<Button variant="contained" sx={{ fontSize:12, paddingTop:0.1,paddingBottom:0.1,borderRadius:0.2,height:30}} onClick={()=>{api.startLivenc().then(res=>console.log(res.data)).catch((err)=>console.log(err.data));}}>Start Live</Button>
-      <Box sx={{maxHeight: 400, width: 590}} >
+        <Box sx={{flexGrow:1}}/>
+        <FormControl  sx={{paddingLeft:0}}>
+       
+        <Select  sx={{height:40, '& legend': { display: 'none' },
+    '& fieldset': { top: 0 }, color:'text.primary', fontWeight:'600',  padding: "0px 0px 0px 0px !important"}}
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+         // value={plat}
+          value={plat}
+          label="Platforms"
+          onChange={(event)=>{setPlat(event.target.value);}}
+        >
+          {<MenuItem value={"All"}>All</MenuItem>}
+          {<MenuItem value={"Bubbles"}>Bubbles</MenuItem>}
+          {<MenuItem value={"Initial List"}>Initial List</MenuItem>}
+          {<MenuItem value={"End List"}>End List</MenuItem>}
+          
+        </Select>
+      </FormControl>
+      <FormControlLabel  control={<Switch color='primary' sx={{}} checked={checked} onChange={switchHandler}/>} label="Highlights" labelPlacement='start' />
+      <Tooltip sx={{padding:0}} title='Refreshes the list with new domains, Not refreshes data of previously detected domains'><IconButton onClick={()=>{getLivenc().then((re)=>{console.log(re.data);res.current="Refreshed!" ;setRows(re.data);setOpen(true)}
+  ).catch((err)=>{console.log(err);res.current="Failed to Refresh";setOpen1(true)});}}><Replay/></IconButton></Tooltip>
+      <Tooltip sx={{color:'red',padding:0}} title='Use only when needed. Refreshes and updates each domain in Live List'><IconButton onClick={()=>{getLivencUpdated().then((re)=>{console.log(re.data); res.current="Refreshed!";setRows(re.data);setOpen(true)}
+  ).catch((err)=>{console.log(err);res.current="Failed to Refresh";setOpen1(true)});}}><Cached/></IconButton></Tooltip>
+        </Stack>
+        <Snackbar open={open} autoHideDuration={2000} anchorOrigin={{ vertical: "top", horizontal: "center" }} onClose={()=>{setOpen(false);}}>
+        <Alert  severity="success" sx={{ width: '100%' }}>
+        {res.current}
+        </Alert>
+      </Snackbar>
+      <Snackbar open={open1} autoHideDuration={2000} anchorOrigin={{ vertical: "top", horizontal: "center" }} onClose={()=>{setOpen1(false);}}>
+        <Alert  severity="error" sx={{ width: '100%' }}>
+        {res.current}
+        </Alert>
+      </Snackbar>
+      <Box sx={{width: 835}} >
       <DataGrid autoHeight sx={{ width: '100%'}}
-        rows={rows}
+        rows={rowsf}
         columns={columns}
         pageSize={psize}
         initialState={{
@@ -126,7 +224,7 @@ export default function NamecheapLive() {
             },
           }}
         onPageSizeChange={(newPageSize) => setPsize(newPageSize)}
-        rowsPerPageOptions={[5,10,15,25,50]}
+        rowsPerPageOptions={[25,50,100,200]}
         disableSelectionOnClick
        
       /></Box>

@@ -21,7 +21,7 @@ import DTable from './ScheduledTable';
 import ScheduledTable from './ScheduledTable';
 import PlacedTable from './PlacedTable';
 import { DataGrid } from '@mui/x-data-grid';
-import api from './api';
+import api, { getscheduledcloseouts } from './api';
 //import { TabContext, TabList, TabPanel } from '@mui/lab';
 
 
@@ -29,11 +29,11 @@ import api from './api';
 export default function CloseoutList() {
 
   
-  const [psize,setPsize]=React.useState(5);
+  const [psize,setPsize]=React.useState(50);
   const [rows, setRows] = React.useState([]);
   //const [cbid, setCbid] = React.useState([]);
 
-React.useEffect(()=>{api.getscheduledcloseouts().then((response)=>{setRows(response.data);}).catch((Error)=>console.log(Error))},[]);
+React.useEffect(()=>{getscheduledcloseouts().then((response)=>{setRows(response.data);}).catch((Error)=>console.log(Error))},[]);
 
 const columns = [
 { field: 'platform', headerName: 'Platform', width: 100 },
@@ -91,65 +91,35 @@ const columns = [
     
 
   return (
-    
-    <Stack direction='column'  sx={{width:'100%'}} spacing={3}>
+    <Stack direction='row' justifyContent='center'  sx={{width:'100%'}}>
+
+    <Stack direction='column'  spacing={3}>
     <Stack direction='column' alignItems='flex-start' spacing={2.5}>
         <Typography alignSelf='left' fontWeight='bold' color='text.primary' >
             Scheduled Closeouts
         </Typography>
 
-    {/*<TableContainer component={Paper}>
-        
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead sx={{fontWeight: 'bold'}}>
-            <TableRow sx={{fontWeight: 'bold'}}>
-              <TableCell sx={{fontWeight: 'bold'}}>Platform</TableCell>
-              <TableCell sx={{fontWeight: 'bold'}} align="right">Domain</TableCell>
-              <TableCell sx={{fontWeight: 'bold'}} align="right">Auction Type</TableCell>
-              <TableCell sx={{fontWeight: 'bold'}} align="right">Our Max Bid</TableCell>
-              <TableCell sx={{fontWeight: 'bold'}} align="right">Current Bid</TableCell>
-              
-              <TableCell sx={{fontWeight: 'bold'}} align="right">Auction End Time (IST)</TableCell>
-              <TableCell sx={{fontWeight: 'bold'}} align="right">Bid Buffer</TableCell>
-              
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map((row,index) => (
-              <TableRow
-                key={row.domain}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
-               
-                <TableCell align="left">{row.platform}</TableCell>
-                <TableCell align="right">{row.domain}</TableCell>
-                <TableCell align="right">{row.auctiontype}</TableCell>
-                <TableCell align="right">{row.bidAmount}</TableCell>
-                <TableCell align="right">{row.currbid}</TableCell>
-                <TableCell align="right">{row.endTimeist.substring(0,16)}</TableCell>
-                <TableCell align="right">4 mins</TableCell>
-               // <TableCell align="right">{fn(row)}</TableCell>
-                
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-            </TableContainer>*/}
-            <Box sx={{maxHeight: 500, width:800}} >
+            <Box sx={{width:765}} >
       <DataGrid autoHeight sx={{ width: '100%'}}
         rows={rows}
         columns={columns}
         pageSize={psize}
         onPageSizeChange={(p)=>{setPsize(p)}}
-        rowsPerPageOptions={[5,10,15,25,50]}
+        rowsPerPageOptions={[10,25,50,100,500]}
         disableSelectionOnClick
+        initialState={{
+          sorting: 
+          {
+            sortModel: [{ field: 'endTimeist', sort: 'asc' }],
+          },
+        }}
         //checkboxSelection
         //onSelectionModelChange={itm => console.log(itm)}
       /></Box>
     
             </Stack>
       </Stack>
-   
+   </Stack>
     
   );
 }

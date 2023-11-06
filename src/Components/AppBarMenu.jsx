@@ -3,6 +3,13 @@ import { alpha, AppBar, Box, Button, ButtonGroup, createTheme, CssBaseline, Divi
 import { useNavigate } from "react-router-dom";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { FormatListBulleted, Gavel, Info, Key, Login, Schedule, Settings, ShoppingCart, StarBorder } from '@mui/icons-material';
+import {
+  usePopupState,
+  bindTrigger,
+  bindMenu,
+  bindHover,
+  bindPopover,
+} from 'material-ui-popup-state/hooks'
 
 const theme = createTheme({
     palette: {
@@ -48,7 +55,7 @@ const theme = createTheme({
           borderRadius: 6,
           marginTop: theme.spacing(1),
           minWidth: 180,
-          pointerEvents:'auto',
+        pointerEvents:'auto',
           color:
             theme.palette.mode === 'light' ? 'rgb(55, 65, 81)' : theme.palette.grey[300],
           boxShadow:
@@ -78,6 +85,7 @@ const [anchorEl, setAnchorEl] = React.useState(null);
 //const open = Boolean(anchorEl);
 const[open,setOpen]=React.useState(false);
 const handleClick = (event) => {
+  //popupState.open();
   setAnchorEl(event.currentTarget);
   setOpen(true);
   
@@ -85,7 +93,8 @@ const handleClick = (event) => {
 const handleClose = () => {
   setAnchorEl(null);
   setOpen(false);
-  
+  //popupState.close();
+ 
 };
 const [anchorEl5, setAnchorEl5] = React.useState(null);
 //const open = Boolean(anchorEl);
@@ -155,7 +164,8 @@ const handleClose1 = () => {
   setOpen1(false);
   
 };
-
+const popupState = usePopupState({ variant: 'popover', popupId: 'demoMenu' })
+//popupState.onMouseLeave=handleClose();
   return (
     <ThemeProvider theme={theme}>
         <CssBaseline/>
@@ -167,10 +177,13 @@ const handleClose1 = () => {
            
             
            <ButtonGroup variant="text" color='secondary'  >
-            <div onMouseOver={handleClick}
-        onMouseLeave={handleClose}>
+            <div  {...bindHover(popupState)} //onMouseOver={handleClick}
+        //onMouseLeave={handleClose}
+        >
             
       <Button
+     
+      
         id="demo-customized-button"
         aria-controls={open ? 'demo-customized-menu' : undefined}
         aria-haspopup="true"
@@ -179,7 +192,7 @@ const handleClose1 = () => {
         //sx={{fontWeight:500}}
         disableElevation
         color='secondary'
-        onClick={handleClick}
+       // onClick={handleClick}
         //onMouseOver={handleClick}
         //onMouseLeave={handleClose}
         endIcon={<KeyboardArrowDownIcon />}
@@ -187,15 +200,18 @@ const handleClose1 = () => {
         <Typography fontWeight='bold'>Auctions</Typography>
       </Button>
       <StyledMenu
+{...bindMenu(popupState)}
+//{...bindHover(popupState)}
         id="demo-customized-menu"
         MenuListProps={{
-          'aria-labelledby': 'demo-customized-button', //onMouseEnter: handleClick,
+          'aria-labelledby': 'demo-customized-button', //onmouseleave: popupState.close,
         
         }}
+        
         //MenuListProps={{ onMouseLeave: handleClose }}
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
+      //  anchorEl={anchorEl}
+        //open={open}
+        //onClose={handleClose}
         elevation={0}
         anchorOrigin={{
           vertical: 'bottom',
@@ -207,22 +223,26 @@ const handleClose1 = () => {
         }}
       >
         <MenuItem sx={{pointerEvents:'auto'}}
-         onClick={()=>{navigate('/home/bulkfetch');handleClose();}} disableRipple>
+         onClick={()=>{navigate('/home/bulkfetch');//handleClose();
+         }} disableRipple>
          <Info></Info>
           Bulk Fetch
         </MenuItem>
         <Divider sx={{ my: 0 }} />
-        <MenuItem onClick={()=>{navigate('/home/bulkbid');handleClose();}} disableRipple>
+        <MenuItem onClick={()=>{navigate('/home/bulkbid');//handleClose();
+        }} disableRipple>
           <Gavel/>
           Bulk Bid
         </MenuItem>
         <Divider sx={{ my: 0 }} />
-        <MenuItem onClick={()=>{navigate('/home/biddinglist');handleClose();}} disableRipple>
+        <MenuItem onClick={()=>{navigate('/home/biddinglist');//handleClose();
+      }} disableRipple>
           <Schedule/>
           Bidding List
         </MenuItem>
         <Divider sx={{ my: 0 }} />
-        <MenuItem onClick={()=>{navigate('/home/watchlist');handleClose();}} disableRipple>
+        <MenuItem onClick={()=>{navigate('/home/watchlist');//handleClose();
+        }} disableRipple>
             <StarBorder/>
           Watchlist
         </MenuItem>
@@ -266,19 +286,19 @@ const handleClose1 = () => {
         }}
       >
         <MenuItem sx={{pointerEvents:'auto'}}
-         onClick={()=>{navigate('/home/bulkfetch');handleClose5();}} disableRipple>
+         onClick={()=>{navigate('/home/bulkfetchbo');handleClose5();}} disableRipple>
          <Info></Info>
           Bulk Fetch
         </MenuItem>
         <Divider sx={{ my: 0 }} />
-        <MenuItem onClick={()=>{navigate('/home/bulkbid');handleClose5();}} disableRipple>
+        <MenuItem onClick={()=>{navigate('/home/bulkorders');handleClose5();}} disableRipple>
           <Gavel/>
-          Bulk Bid
+          Bulk Orders
         </MenuItem>
         <Divider sx={{ my: 0 }} />
-        <MenuItem onClick={()=>{navigate('/home/biddinglist');handleClose5();}} disableRipple>
+        <MenuItem onClick={()=>{navigate('/home/orderlist');handleClose5();}} disableRipple>
           <Schedule/>
-          Bidding List
+          Order List
         </MenuItem>
         <Divider sx={{ my: 0 }} />
         <MenuItem onClick={()=>{navigate('/home/watchlist');handleClose5();}} disableRipple>
@@ -517,12 +537,17 @@ const handleClose1 = () => {
           horizontal: 'right',
         }}
       >
-        <MenuItem onClick={()=>{navigate('/home/setting/preferences');handleClose4();}} disableRipple>
+        <MenuItem onClick={()=>{navigate('/home/settings/preferences');handleClose4();}} disableRipple>
          <Settings/>
           Preferences
         </MenuItem>
         <Divider sx={{ my: 0 }} />
-        <MenuItem onClick={()=>{//navigate('/home/setting/');
+        <MenuItem onClick={()=>{navigate('/home/settings/live');handleClose4();}} disableRipple>
+         <Settings/>
+          Live Filters
+        </MenuItem>
+        <Divider sx={{ my: 0 }} />
+        <MenuItem onClick={()=>{navigate('/home/settings/apikeys');
         handleClose4();}} disableRipple>
           <Key/>
           Api Keys

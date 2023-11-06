@@ -17,7 +17,7 @@ import { Alert, Box, Button, Card, CardActionArea, CssBaseline, FormControl, For
 import { createTheme, ThemeProvider } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import api from './api';
+import api, { instantcloseoutgd, instantcloseoutgd1, schedulecloseoutgd, schedulecloseoutgd1 } from './api';
 //import { TabContext, TabList, TabPanel } from '@mui/lab';
 
 
@@ -60,10 +60,9 @@ export default function Mcloseouts() {
     const [bool,setBool]=useState(false);
     const [open,setOpen]=useState(false);
     const [open1,setOpen1]=useState(false);
-   const [res,setRes]=useState([]);
+    const [open2,setOpen2]=useState(false);
+ const res= React.useRef([]);const err= React.useRef("");
 
-   React.useEffect(() => { console.log(plat);console.log(plat);}, [plat])
-   React.useEffect(() => {}, [bool])
   const handleChange = (event) => {
     setValue(event.target.value);
   };
@@ -77,16 +76,22 @@ export default function Mcloseouts() {
 
   return (
     
-    <Stack direction='column' sx={{width: '100%'}} spacing={2.5}>
+    <Stack direction='row' sx={{width: '100%'}} justifyContent='center'>
+    <Stack direction='column'  spacing={2.5}>
     <Stack direction='row' justifyContent="flex-start">
     <Snackbar open={open} autoHideDuration={4000} anchorOrigin={{ vertical: "top", horizontal: "center" }} onClose={()=>{setOpen(false);}}>
         <Alert onClose={()=>{setOpen(false);}} severity="info" sx={{ width: '100%' }}>
-          Closeouts bought successfully for {res[0]}/{res[1]} domains.
+          Closeouts bought successfully for {res.current[0]}/{res.current[1]} domains.
         </Alert>
       </Snackbar>
       <Snackbar open={open1} anchorOrigin={{ vertical: "top", horizontal: "center" }} autoHideDuration={4000} onClose={()=>{setOpen1(false);}}>
         <Alert onClose={()=>{setOpen1(false);}} severity="info" sx={{ width: '100%' }}>
-         Closeouts scheduled successfully for {res[0]}/{res[1]} domains.
+         Closeouts scheduled successfully for {res.current[0]}/{res.current[1]} domains.
+        </Alert>
+      </Snackbar>
+      <Snackbar open={open2} anchorOrigin={{ vertical: "top", horizontal: "center" }} autoHideDuration={4000} onClose={()=>{setOpen2(false);}}>
+        <Alert onClose={()=>{setOpen2(false);}} severity="error" sx={{ width: '100%' }}>
+         {err.current}
         </Alert>
       </Snackbar>
         <Typography alignSelf='left' fontWeight='bold' color='text.primary' >
@@ -139,7 +144,7 @@ export default function Mcloseouts() {
     <Box 
         component="form"
         sx={{
-           width: '45vw'
+           width: '58vw'
         }}
         noValidate
         autoComplete="off"
@@ -164,17 +169,28 @@ export default function Mcloseouts() {
         </div>
         <Stack direction='row' justifyContent='space-between' paddingTop={2.5}>
         <Button onClick={()=>{
-            var arr= value.split("\n");
-            console.log(checked);
-
+            var arr= value.trim.split("\n");
+            if(arr[0].split(',').length>1)
+            {
+              var a= arr.map((ar)=> {return ar.split(',')});
+              if(!checked)
+              {schedulecloseoutgd1(a).then((Response)=>{console.log(Response.data); if(Response.data[0]!=0) {res.current=Response.data; setOpen1(true);} else {err.current="Bid not placed for any of domains"; setOpen2(true)}}).catch(error=>{err.current="Bids not placed, SERVER ERROR!";setOpen2(true);console.log(error)})}
+            else
+            {
+                instantcloseoutgd1(a).then((Response)=>{console.log(Response.data);if(Response.data[0]!=0) {res.current=Response.data; setOpen(true);} else {err.current="Bid not placed for any of domains"; setOpen2(true)}}).catch(error=>{err.current="Bids not placed, SERVER ERROR!";setOpen2(true);console.log(error)});  
+            }
+            }
+            else
+            {
             if(plat==="GoDaddy")
             {
             if(!checked)
-            {api.schedulecloseoutgd(arr,price).then((Response)=>{console.log(Response.data); setRes(Response.data); setOpen1(true);}).catch(error=>console.log(error));}
+            {schedulecloseoutgd(arr,price).then((Response)=>{console.log(Response.data); if(Response.data[0]!=0) {res.current=Response.data; setOpen1(true);} else {err.current="Closeouts not scheduled for any of domains"; setOpen2(true)}}).catch(error=>{err.current="Closeouts not placed, SERVER ERROR!";setOpen2(true);console.log(error)})}
             else
             {
-                api.instantcloseoutgd(arr,price).then((Response)=>{console.log(Response.data); setRes(Response.data);setOpen(true);}).catch(error=>console.log(error));   
-            }}   
+                instantcloseoutgd(arr,price).then((Response)=>{console.log(Response.data); if(Response.data[0]!=0) {res.current=Response.data; setOpen(true);} else {err.current="Bid not placed for any of domains"; setOpen2(true)}}).catch(error=>{err.current="Closeouts not placed, SERVER ERROR!";setOpen2(true);console.log(error)})
+            }}
+          }
             setValue('');
             }} 
             sx={{backgroundColor:'black' , alignSelf:"right", fontSize:12, paddingTop:0.1,paddingBottom:0.1,borderRadius:0.2,height:30}} variant="contained">Bulk Buy</Button>
@@ -188,7 +204,7 @@ export default function Mcloseouts() {
        </Box>*/}
       </Stack>
       </Stack>
-   
+      </Stack>
     
   );
 }

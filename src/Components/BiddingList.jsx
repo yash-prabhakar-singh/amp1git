@@ -58,9 +58,10 @@ export default function BiddingList() {
 
   return (
     
-    <Stack direction='column'  sx={{width:'100%'}} spacing={3}>
+    <Stack direction='column' alignItems='center'  sx={{width:'100%'}} spacing={3}>
     <ScheduledTable/>
-    <PlacedTable />
+    {//<PlacedTable />
+    }
       </Stack>
    
     

@@ -16,7 +16,7 @@ import Sidebar from './Sidebar';
 import { Alert, Box, Button, Card, CardActionArea, Checkbox, CssBaseline, Divider, FormControl, FormControlLabel, Grid, IconButton, InputLabel, MenuItem, Select, Snackbar, Stack, Switch, Tab, Typography, useMediaQuery } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import api from './api';
+import api, { fetchgdv } from './api';
 import { DataGrid } from '@mui/x-data-grid';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
@@ -137,7 +137,7 @@ export default function Bulkfgdv() {
           placeholder="Domains"
             multiline
             rows={10}
-            sx={{width: 230}}
+            sx={{width: 260}}
            // fullWidth
             onChange={handleChange}
             value={value}
@@ -154,7 +154,7 @@ export default function Bulkfgdv() {
             //var a= arr.map((ar)=> {return ar.split(',')});
             setFdets([]);
             console.log(arr);
-            api.fetchgdv(arr).then((res)=>{console.log(res.data); setFdets(res.data);setLoaded(true);setLoading(false);if(fdets.length!=0)
+            fetchgdv(arr).then((res)=>{console.log(res.data); setFdets(res.data);setLoaded(true);setLoading(false);if(fdets.length!=0)
               setOpen(true);}).catch((err)=>console.log(err))
             setBfdets(true);
            // setValue('');
