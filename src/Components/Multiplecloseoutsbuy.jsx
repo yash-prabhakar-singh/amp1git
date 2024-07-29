@@ -169,12 +169,14 @@ export default function Mcloseouts() {
         </div>
         <Stack direction='row' justifyContent='space-between' paddingTop={2.5}>
         <Button onClick={()=>{
-            var arr= value.trim.split("\n");
+            var arr= value.trim().split("\n");
             if(arr[0].split(',').length>1)
             {
               var a= arr.map((ar)=> {return ar.split(',')});
               if(!checked)
-              {schedulecloseoutgd1(a).then((Response)=>{console.log(Response.data); if(Response.data[0]!=0) {res.current=Response.data; setOpen1(true);} else {err.current="Bid not placed for any of domains"; setOpen2(true)}}).catch(error=>{err.current="Bids not placed, SERVER ERROR!";setOpen2(true);console.log(error)})}
+              {
+                schedulecloseoutgd1(a).then((Response)=>{console.log(Response.data); if(Response.data[0]!=0) {res.current=Response.data; setOpen1(true);} else {err.current="Bid not placed for any of domains"; setOpen2(true)}}).catch(error=>{err.current="Bids not placed, SERVER ERROR!";setOpen2(true);console.log(error)})
+              }
             else
             {
                 instantcloseoutgd1(a).then((Response)=>{console.log(Response.data);if(Response.data[0]!=0) {res.current=Response.data; setOpen(true);} else {err.current="Bid not placed for any of domains"; setOpen2(true)}}).catch(error=>{err.current="Bids not placed, SERVER ERROR!";setOpen2(true);console.log(error)});  

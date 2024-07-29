@@ -14,24 +14,25 @@ async function getToken()
      if (currentAccount.tenantId == msalConfig.auth.tenantId) {
        
            const accessTokenResponse = await msalInstance.acquireTokenSilent(accessTokenRequest);
-           return `Bearer ${accessTokenResponse.accessToken}`;
+           return `Bearer ${accessTokenResponse.accessToken}`;              
        
      }
      return null;
    }
  }
-
+                              
 function axiosClient()
-{
+{        
 
 const axiosInstance = axios.create({
-    baseURL:'https://api.auctionhacker.com', //
-    //'http://localhost:88',
+    baseURL://'https://amp-backend--d76ywfl.wittyground-fa4ba52b.eastus2.azurecontainerapps.io',
+    //'https://api.auctionhacker.com', //
+    'http://localhost:88',
    responseType: "json",
-   headers: {
+   headers: { 
      accept: "application/json",
      "Content-Type": "application/json",
-   },
+   },          
    timeout: 1000 * 60,
  });
  
@@ -39,7 +40,7 @@ const axiosInstance = axios.create({
  // Interceptor to add access token to every request
  axiosInstance.interceptors.request.use(async (config) => {//console.log("abc")
    const accessToken = await getToken(); // Retrieve the access token from where you store it
-   //console.log(accessToken);
+   console.log(accessToken);
    config.headers.Authorization = accessToken;
    return config;
  }, (error) => {

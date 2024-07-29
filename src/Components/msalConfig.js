@@ -6,8 +6,8 @@ const msalConfig = {
       issuer: 'https://login.microsoftonline.com/eba2c098-631c-4978-8326-5d25c2d09ca5/v2.0',
       //issuer: 'https://sts.windows.net/eba2c098-631c-4978-8326-5d25c2d09ca5/',
       authority: 'https://login.microsoftonline.com/eba2c098-631c-4978-8326-5d25c2d09ca5',
-      redirectUri: 'https://auctionhacker.com/home/tools/est',//
-      //'http://localhost:3000/home/tools/est',
+      redirectUri://'https://amp-frontend.wittyground-fa4ba52b.eastus2.azurecontainerapps.io/home/tools/est',//'https://auctionhacker.com/home/tools/est',//
+      'http://localhost:3000/home/tools/est',
       tenantId: 'eba2c098-631c-4978-8326-5d25c2d09ca5',
       strictDiscoveryDocumentValidation: false,
       postLogoutRedirectUri: "/",

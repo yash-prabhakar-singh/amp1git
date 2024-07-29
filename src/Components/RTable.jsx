@@ -67,7 +67,7 @@ React.useEffect(()=>{getcompletedauctions().then((response)=>{setRows(response.d
         columns={columns}
         pageSize={psize}
         onPageSizeChange={(p)=>{setPsize(p)}}
-        rowsPerPageOptions={[10,25,50,100,500]}
+        rowsPerPageOptions={[10,25,50,100]}
         disableSelectionOnClick
         components={{
           Toolbar: GridToolbar

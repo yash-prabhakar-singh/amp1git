@@ -156,7 +156,7 @@ const navigate= useNavigate();
             <ListItemButton onClick={()=>navigate('/home/live/namesilo')}
             >
              
-              <Language />
+              <Language wg/>
               
               <Typography paddingLeft={0.5} fontSize={16} variant='h6'>Namesilo Live</Typography>
 

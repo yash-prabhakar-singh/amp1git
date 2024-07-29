@@ -62,12 +62,75 @@ export default function Bulkfgdv() {
     const [bool, setBool] = React.useState(false);
     const columns = [
       { field: 'domain', headerName: 'Domain', width: 210 },
-      
       {
         field: 'govalue',
         headerName: 'GDV',
         type: 'number',
         width: 70,
+        valueGetter: (params) => params.row.goValue.value
+      },
+      {
+        field: 'govalueWholesale',
+        headerName: 'GDV W',
+        type: 'number',
+        width: 110,
+        valueGetter: (params) => params.row.goValueWholesale.value
+      },
+      {
+        field: 'listPrice',
+        headerName: 'List P',
+        type: 'number',
+        width: 100,
+        valueGetter: (params) => params.row.listPrice.value
+      },
+      {
+        field: 'minPrice',
+        headerName: 'Min P',
+        type: 'number',
+        width: 90,
+        valueGetter: (params) => params.row.minPrice.value
+      },
+      {
+        field: 'maxPrice',
+        headerName: 'Max P',
+        type: 'number',
+        width: 90,
+        valueGetter: (params) => params.row.maxPrice.value
+      },
+      {
+        field: 'salesProbability',
+        headerName: 'Sales Prob',
+        type: 'number',
+        width: 150,
+        valueGetter: (params) => params.row.salesProbability
+      },
+      {
+        field: 'salesProbability500',
+        headerName: 'Sales Prob $500',
+        type: 'number',
+        width: 180,
+        valueGetter: (params) => params.row.salesProbability500
+      },
+      {
+        field: 'salesProbabilityWholesale',
+        headerName: 'Sales Prob W',
+        type: 'number',
+        width: 200,
+        valueGetter: (params) => params.row.salesProbabilityWholesale
+      },
+      {
+        field: 'maxDailyUsage',
+        headerName: 'Max DU',
+        type: 'number',
+        width: 130,
+        valueGetter: (params) => params.row.maxDailyUsage
+      },
+      {
+        field: 'dailyUsage',
+        headerName: 'Daily U',
+        type: 'number',
+        width: 100,
+        valueGetter: (params) => params.row.dailyUsage
       }
     ];
     const headers = [

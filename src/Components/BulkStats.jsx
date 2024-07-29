@@ -166,7 +166,7 @@ export default function BulkStats() {
     <Box 
         component="form"
         sx={{
-          // width: '45vw'
+           width: '800px'
         }}
         noValidate
         autoComplete="off"
@@ -210,7 +210,7 @@ export default function BulkStats() {
             setBfdets(true);
            // setValue('');
             setVariant("contained");
-            }}  sx={{backgroundColor:'black' ,alignSelf : "right",fontSize:12, paddingTop:0.1,paddingBottom:0.1,borderRadius:0.2,height:30}} variant="contained">{loading?"Fetching..":"Fetch ESTs"}</Button> </Stack>
+            }}  sx={{backgroundColor:'black' ,alignSelf : "right",fontSize:12, paddingTop:0.1,paddingBottom:0.1,borderRadius:0.2,height:30}} variant="contained">{loading?"Fetching..":"Fetch Stats"}</Button> </Stack>
         
         </Box>
        <Box>

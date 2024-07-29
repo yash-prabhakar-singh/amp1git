@@ -61,6 +61,9 @@ import DCLiveM from './MobileComponent/DropcatchLiveM';
 import NamesiloLiveM from './MobileComponent/NamesiloLiveM';
 import NamecheapLiveM from './MobileComponent/NamecheapLiveM';
 import GDLiveM from './MobileComponent/GDLiveM';
+import AlgoSettings from './Components/AlgoSettings';
+import { SampleUI } from './Components/SampleFigma';
+import PreferencesNew from './Components/PreferencesNew';
 
 
 function App() {
@@ -73,6 +76,7 @@ function App() {
      {//<Route path="/" exact element={<Navigate to="/home/tools/est"/>}/>
      }
      <Route path="/est/login" exact element={<SignInEst/>}/>
+     <Route path="/sample" element={<SampleUI/>}/>
 
      <Route path="/est" exact element={<AuthenticatedRouteEst><Bulkfest/></AuthenticatedRouteEst>}>
 
@@ -107,10 +111,14 @@ function App() {
 <Route path="tools/stats" element={<BulkStats/>}/>
 
 <Route path="watchlist" element={<RouteGuard roles={[appRoles.Watch]}><WatchList/></RouteGuard>}/>
-     <Route path="settings/preferences" element={<RouteGuard roles={[appRoles.Admin]}><Preferences/></RouteGuard>}/>
+     <Route path="settings/preferences" element={<RouteGuard roles={[appRoles.Admin]}><PreferencesNew/></RouteGuard>}/>
      <Route path="settings/apikeys" element={<RouteGuard roles={[appRoles.Admin]}><Apikeys/></RouteGuard>}/>
      <Route path="settings/live" element={<RouteGuard roles={[appRoles.Admin]}><LiveSettings/></RouteGuard>}/>
      <Route path="notifications" element={<RouteGuard roles={[appRoles.Reports]}><Notifications/></RouteGuard>}/>
+     <Route path="settings/algo" element={<RouteGuard roles={[appRoles.Admin]}><AlgoSettings/></RouteGuard>}/>
+     <Route path="sample" element={<RouteGuard roles={[appRoles.Admin]}><SampleUI/></RouteGuard>}/>
+
+
      </Route>
     { //<Route path="/bulkfetch" exact element={<RouteGuard roles={[appRoles.Bid_GD]}><BulkFetch/></RouteGuard>}/>
      //<Route path="/proside" exact element={<RouteGuard roles={[appRoles.Bid_GD]}><Proside/></RouteGuard>}/>

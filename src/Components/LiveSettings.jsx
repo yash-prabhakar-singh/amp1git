@@ -24,6 +24,8 @@ const LiveSettings= () => {
   const [inputValue, setInputValue] = useState('');
   const [textInputs, setTextInputs] = useState(new Set());
   const [open,setOpen]= React.useState(false);
+  const [open1,setOpen1]= React.useState(false);
+
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
   };
@@ -90,7 +92,12 @@ const LiveSettings= () => {
         Details Saved!
         </Alert>
       </Snackbar>
-      <Button onClick={()=>{setLiveFilterSettings(checkbox1,checkbox2,sliderValue,text1,text2,text3,text4,text5,text6,text7,Array.from(textInputs)).then(()=>setOpen(true)).catch((error)=>{console.log(error)})}} variant="contained" color="primary" sx={{backgroundColor:'black' ,alignSelf : "right",fontSize:12, paddingRight:1,paddingLeft:1,paddingTop:0.1,paddingBottom:0.1,height:30}}>
+      <Snackbar open={open1} autoHideDuration={2000} anchorOrigin={{ vertical: "top", horizontal: "center" }} onClose={()=>{setOpen1(false);}}>
+        <Alert  severity="error" sx={{ width: '100%' }}>
+        Error Occurred!
+        </Alert>
+      </Snackbar>
+      <Button onClick={()=>{setLiveFilterSettings(checkbox1,checkbox2,sliderValue,text1,text2,text3,text4,text5,text6,text7,Array.from(textInputs)).then(()=>setOpen(true)).catch((error)=>{console.log(error);setOpen1(true);})}} variant="contained" color="primary" sx={{backgroundColor:'black' ,alignSelf : "right",fontSize:12, paddingRight:1,paddingLeft:1,paddingTop:0.1,paddingBottom:0.1,height:30}}>
         Save
       </Button>
        </Stack>

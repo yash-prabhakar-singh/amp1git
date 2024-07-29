@@ -219,7 +219,9 @@ const disabledb=()=>{if(canBidNSLive()) return false; else return true;}
             sorting: {
               sortModel: [{ field: 'id', sort: 'desc' }],
             },
-          }}
+          }}         
+           getRowId={(row)=>row.nsid}
+
         onPageSizeChange={(newPageSize) => setPsize(newPageSize)}
         rowsPerPageOptions={[25,50,100,200]}
         disableSelectionOnClick

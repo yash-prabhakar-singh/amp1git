@@ -223,8 +223,8 @@ const disabledb=()=>{if(canBidDDLive()) return false; else return true;}
       </Snackbar>
       <Box sx={{width: 830}} >
       <DataGrid autoHeight sx={{ width: '100%'}}
+            //getRowId={(params)=>{return params.row.auction_id}}
             getRowId={(row)=>{return row.auction_id}}
-
         rows={rowsf}
         columns={columns}
         pageSize={psize}

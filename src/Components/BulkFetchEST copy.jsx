@@ -22,6 +22,7 @@ import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
 import { CSVLink } from 'react-csv';
 import { Download } from '@mui/icons-material';
+import CopyToClipboardButton from './CopyButton';
 
 //import { TabContext, TabList, TabPanel } from '@mui/lab';
 
@@ -78,6 +79,8 @@ export default function Bulkfest1() {
   ];
    // React.useEffect(() => { console.log(plat);console.log(plat);}, [plat])
     React.useEffect(() => {if(!matches)navigate("/m")}, []);
+   // React.useEffect(() => {}, [value]);
+
    const handleChange = (event) => {
      setValue(event.target.value);
    };
@@ -102,10 +105,12 @@ export default function Bulkfest1() {
     return(<Mobile/>);
     else
     return(
-      <ThemeProvider theme={theme}><Box sx={{backgroundColor:'white', maxHeight:'100vh'}}>
+      <ThemeProvider theme={theme}><Box width='100%' sx={{ maxHeight:'100vh'}}>
       <CssBaseline/>
-      <Stack direction='row' justifyContent='flex-start' paddingTop={4} sx={{width:'100%'}}>
-    <Stack direction='column' spacing={2.5} >
+      <Stack direction='row' justifyContent='center' paddingTop={4} sx={{width:'100%'}}>
+    <Stack direction='column'  sx={{
+          
+       }} spacing={2.5} >
       <Stack direction='row' justifyContent="flex-start" >
     <Snackbar open={open} autoHideDuration={2000} anchorOrigin={{ vertical: "top", horizontal: "center" }} onClose={()=>{setOpen(false);}}>
         <Alert  severity="success" sx={{ width: '100%' }}>
@@ -116,22 +121,36 @@ export default function Bulkfest1() {
             Bulk Fetch EST
         </Typography></Stack>
    
-        <Stack direction='row'  spacing={7}>
         
     <Box 
         component="form"
         sx={{
-          // width: '45vw'
-        }}
+          width: '800px'
+       }}
         noValidate
         autoComplete="off"
       >
          
         <div>
         <Stack alignItems='flex-start' spacing={1.5}>
-        <Typography color='text.secondary'>
-          Enter the list of domains (less than 200):
-        </Typography>
+        <Stack direction='row' width='100%'><Typography color='text.secondary'>
+          Enter the list of domains:
+        </Typography><Box flexGrow={1} /><CopyToClipboardButton text={value}/>
+        <IconButton
+                variant='contained'
+                color="primary"
+                sx={{alignSelf : "right",fontSize:12, paddingTop:0.1,paddingBottom:0.1,borderRadius:0.2,height:30}}
+            >
+                <CSVLink
+                    headers={headers}
+                    data={fdets}
+                    filename="ESTs"
+                    style={{ "textDecoration": "none", "color": "black" }}
+                >
+                    {<Download fontSize='small'/>}
+                </CSVLink>
+            </IconButton>
+        </Stack>
           <TextField
             id="outlined-multiline-static"
             name='domainbids'
@@ -141,10 +160,11 @@ export default function Bulkfest1() {
           placeholder="Domains"
             multiline
             rows={15}
-            sx={{width: 260}}
+            //sx={{width: 260}}
            // fullWidth
             onChange={handleChange}
             value={value}
+            fullWidth
            
           />
           </Stack>
@@ -155,12 +175,20 @@ export default function Bulkfest1() {
         <Button 
         disabled={loading}
       onClick={()=>{
-          setLoading(true);
-            var arr= value.split("\n")
+            setLoading(true);
+            var arr= value.replace(/\s/g,"").split("\n")
+            var s="";
             //var a= arr.map((ar)=> {return ar.split(',')});
             setFdets([]);
             console.log(arr);
-            fetchest(arr).then((res)=>{console.log(res.data); setFdets(res.data);setLoaded(true);setLoading(false);if(fdets.length!=0)
+            fetchest(arr).then((res)=>{console.log(res.data); setFdets(res.data);setLoaded(true);setLoading(false);
+              for(let i=0;i<res.data.length;i++)
+              { var row=res.data[i];
+                s=s+(row.domain??'domain')+'\t'+(row.appraised_value??0)+"\n";
+            }
+            setValue(s);
+
+              if(fdets.length!=0)
               setOpen(true);}).catch((err)=>{console.log(err);setLoading(false)})
             setBfdets(true);
            // setValue('');
@@ -168,7 +196,7 @@ export default function Bulkfest1() {
             }}  sx={{backgroundColor:'black' ,alignSelf : "right",fontSize:12, paddingTop:0.1,paddingBottom:0.1,borderRadius:0.2,height:30}} variant="contained">{loading?"Fetching..":"Fetch ESTs"}</Button> </Stack>
         
         </Box>
-       <Box>
+       {/*<Box>
       {bfdets&&<Divider orientation='vertical'  />}
       </Box>
       
@@ -193,7 +221,7 @@ export default function Bulkfest1() {
                 >
                     {<Download/>}
                 </CSVLink>
-            </IconButton>*/
+            </IconButton>
             }</Box>
         </Stack>
       <DataGrid autoHeight sx={{ width: '100%'}}
@@ -220,13 +248,13 @@ export default function Bulkfest1() {
       </Box>
       {bfdets&&<Stack direction='column' justifyContent='flex-start' alignItems='flex-start'>
         {<Typography align='left'>{fdets.map((row)=>{
-          return <>{row.domain??'domain'}&nbsp;{row.appraised_value??0}<br/></>})}</Typography>
+          return <>{row.domain??'domain'}{'\t'}{row.appraised_value??0}<br/></>})}</Typography>
         }
         {//fdets.map((row)=>{if(row!==null)
        // return <Stack direction='row'><Typography>{row.domain}</Typography><Typography paddingLeft='4em'>{row.appraised_value}</Typography></Stack>})
         }
-      </Stack>}
-      </Stack>
+      </Stack>}*/}
+      
       </Stack>
       </Stack>
       </Box>

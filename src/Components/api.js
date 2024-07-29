@@ -17,6 +17,7 @@ export const getUsers=()=>
 }
 
 
+
 export const getOtp=()=>
 {
    return axiosInstance.get('/getotp')
@@ -53,6 +54,26 @@ export const setLiveFilterSettings=(noHyphens,noNumbers,domainLength,text1,text2
    let wrapper={noHyphens,noNumbers,domainLength,diff_exts_ests:[text1,text2,text3,text4,text5,text6],new_ests:text7,restrictedExts};
    console.log(wrapper);
 return axiosInstance.post(`/postlivefilters`,wrapper);
+}
+
+export const getFastBidSettings=()=>
+{
+   return axiosInstance.get("/getfastbidsettings");
+}
+
+export const getAPIKeySettings=()=>
+{
+   return axiosInstance.get("/getapikeysettings");
+}
+
+export const setAPIKeySettings=(apiKeys)=>
+{
+   return axiosInstance.post("/postapikeysetting",apiKeys);
+}
+
+export const setFastBidSettings=(fastBid)=>
+{
+   return axiosInstance.post("/setfastbidsettings",fastBid);
 }
 
 export const cancelBidDc=(domain, auctionId)=>
@@ -275,6 +296,11 @@ export const getnotifs=()=>
 export const getnotifstoday=()=>
 {
    return axiosInstance.get(`/getnotificationstoday`);
+}
+
+export const getnotifsnew=(to,from,offSet,imp)=>
+{
+   return axiosInstance.get(`/getnotificationsnew`,{params:{to,from,offSet,imp}});
 }
 
 export const sample1=()=>

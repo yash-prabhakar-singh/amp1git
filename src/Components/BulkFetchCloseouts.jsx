@@ -16,7 +16,7 @@ import Sidebar from './Sidebar';
 import { Alert, Box, Button, Card, CardActionArea, Checkbox, CssBaseline, FormControl, FormControlLabel, Grid, InputLabel, MenuItem, Select, Snackbar, Stack, Switch, Tab, Typography, useMediaQuery } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import  { fetchDetailscloseoutsgd } from './api';
+import  { fetchDetailscloseoutsgd, watchlistcloseouts } from './api';
 import { DataGrid } from '@mui/x-data-grid';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
@@ -224,7 +224,7 @@ export default function Bulkfetchcloseout() {
           BaseCheckbox: CheckboxWrapper
         }}
         checkboxSelection
-        onSelectionModelChange={itm => {console.log(itm); api.watchlistcloseouts(itm,fdets).then().catch(err=>console.log(err)) 
+        onSelectionModelChange={itm => {console.log(itm); watchlistcloseouts(itm,fdets).then().catch(err=>console.log(err)) 
         }}
       /></Box>}
      

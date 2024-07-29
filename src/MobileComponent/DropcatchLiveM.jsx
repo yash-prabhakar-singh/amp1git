@@ -226,7 +226,8 @@ const disabledb=()=>{if(canBidDCLive()) return false; else return true;}
         onPageSizeChange={(newPageSize) => setPsize(newPageSize)}
         rowsPerPageOptions={[25,50,100,200]}
         disableSelectionOnClick
-       
+        getRowId={(row)=>{return row.auctionId}}
+
       /></Box>
         </Stack>
      

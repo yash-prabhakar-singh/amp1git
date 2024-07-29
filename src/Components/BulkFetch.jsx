@@ -16,7 +16,7 @@ import Sidebar from './Sidebar';
 import { Box, Button, Card, CardActionArea, Checkbox, CssBaseline, FormControl, FormControlLabel, Grid, InputLabel, MenuItem, Select, Stack, Switch, Tab, Typography } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { fetchDetailsdc, fetchDetailsdyna } from './api';
+import { fetchDetailsdc, fetchDetailsdyna, watchlist } from './api';
 import { DataGrid } from '@mui/x-data-grid';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
@@ -235,7 +235,7 @@ export default function BulkFetch() {
           BaseCheckbox: CheckboxWrapper
         }}
         checkboxSelection
-        onSelectionModelChange={itm => {console.log(itm); api.watchlist(itm,fdets).then().catch(err=>console.log(err)) }}
+        onSelectionModelChange={itm => {console.log(itm); watchlist(itm,fdets).then().catch(err=>console.log(err)) }}
       /></Box>}
      
       </Stack>

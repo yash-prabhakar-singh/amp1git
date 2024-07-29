@@ -252,6 +252,7 @@ return false;
 
 export function canAdmin()
 {
+    console.log(msalInstance.getActiveAccount())
 const arr=msalInstance.getActiveAccount().idTokenClaims.roles;
 
 for(let i=0;i<arr.length;i++)
