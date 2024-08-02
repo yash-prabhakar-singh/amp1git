@@ -31,7 +31,7 @@ const msalConfig = {
   interactionType: 'redirect',
   system: {
     loggerOptions: {
-      // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+      
       loggerCallback: (level, message, containsPii) => {
         if (containsPii) {
           return;
@@ -97,6 +97,7 @@ export const appRoles = {
   CloseOut:"CloseOut",
   BackOrder:"BackOrder",
   Admin:"Admin",
+  Developer:"Developer",
   Sample: "Sample",
 };
   
