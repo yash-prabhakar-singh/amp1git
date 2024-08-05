@@ -186,41 +186,30 @@ export default function Watchlistcloseouts() {
       pagination: { pageSize: psize },
       sorting: [{ id: 'endTimeist', desc: true }],
     },
-    muiTableBodyCellProps: {
-      sx: {
-        '&:nth-of-type(odd)': {
-          backgroundColor: theme.palette.action.hover,
-        },
-      },
+    muiTablePaperProps:{
+      sx: { width: '100%' },
     },
     muiTableHeadCellProps: {
       sx: {
-        // backgroundColor: theme.palette.primary.main,
         color: theme.palette.common.grey,
       },
     },
-    muiTableContainerProps: {
-      sx: {
-        maxHeight: 500,
-      },
-    },
+   
     muiTablePaginationProps: {
       rowsPerPageOptions: [10, 25, 50, 100, 500],
       onPageSizeChange: (newPageSize) => setPsize(newPageSize),
     },
+
     enableRowSelection: true,
     enableMultiRowSelection: true,
-    getRowId: (row) => row.id, // Assuming each row has a unique 'id' field
+    getRowId: (row) => row.id, 
     onRowSelectionChange: setRowSelection,
     state: { rowSelection },
     muiSelectCheckboxProps: {
       icon: <StarBorderIcon />,
       checkedIcon: <StarIcon />,
     },
-    // muiTableHeadCellCheckboxProps: {
-    //   icon: <StarBorderIcon />,
-    //   checkedIcon: <StarIcon />,
-    // },
+   
   });
 
  
@@ -238,46 +227,10 @@ export default function Watchlistcloseouts() {
               </IconButton>
             )}
           </Stack>
-          <Box sx={{ width: 850 }}>
+          <Box sx={{ width: 900 }}>
             <MaterialReactTable
               table={table}
-              muiTablePaperProps={{
-                sx: { width: '100%' },
-              }}
-              muiTableBodyCellProps={{
-                sx: {
-                  '&:nth-of-type(odd)': {
-                    backgroundColor: theme.palette.action.hover,
-                  },
-                },
-              }}
-              muiTableHeadCellProps={{
-                sx: {
-                  backgroundColor: theme.palette.primary.main,
-                  color: theme.palette.common.white,
-                },
-              }}
-              muiTableContainerProps={{
-                sx: {
-                  maxHeight: 500,
-                },
-              }}
-              muiTablePaginationProps={{
-                rowsPerPageOptions: [10, 25, 50, 100, 500],
-                onPageSizeChange: (newPageSize) => setPsize(newPageSize),
-              }}
-              muiTableCheckboxProps={{
-                icon: <StarBorderIcon />,
-                checkedIcon: <StarIcon />,
-              }}
-              muiTableBodyRowProps={({ row }) => ({
-                onClick: row.getToggleSelectedHandler(),
-                sx: { cursor: 'pointer' },
-              })}
-              // muiTableHeadCellCheckboxProps={{
-              //   icon: <StarBorderIcon />,
-              //   checkedIcon: <StarIcon />,
-              // }}
+             
             />
           </Box>
         </Stack>

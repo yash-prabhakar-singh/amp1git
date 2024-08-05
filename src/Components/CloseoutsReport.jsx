@@ -197,23 +197,12 @@ export default function CloseoutsReport() {
       pagination: { pageSize: psize },
       sorting: [{ id: 'endTimeist', desc: true }],
     },
-    enablePagination: true,
-    paginationDisplayMode: 'pages',
-    rowsPerPageOptions: [10, 25, 50, 100, 500],
-    // state: { pagination: { pageSize: psize } },
-    // onPaginationChange: (updater) => {
-    //   const newState = updater({
-    //     pageIndex: 0,
-    //     pageSize: psize,
-    //   });
-    //   setPsize(newState.pageSize);
-    // },
-    
+  
+    muiTablePaginationProps: {
+      rowsPerPageOptions: [10, 25, 50, 100, 500],
+      onPageSizeChange: (newPageSize) => setPsize(newPageSize),
+    },    
   });
-
-  // useEffect(() => {
-  //   setPsize(table.getState().pagination.pageSize);
-  // }, [table.getState().pagination.pageSize]);
 
   return (
     <ThemeProvider theme={theme}>

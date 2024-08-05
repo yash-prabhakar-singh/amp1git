@@ -1,13 +1,13 @@
-import { Alert, Box, IconButton, Paper, Snackbar, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
-import * as React from 'react';
-import axios from 'axios';
-import api, { cancelBidDc, cancelBidDd, cancelBidGd, cancelBidNc, cancelBidNs, getcompletedauctions, getscheduledauctions, schedulebiddcsingle, schedulebiddynasingle, schedulebidgdsingle, schedulebidncsingle, schedulebidnssingle } from './api';
-import { DataGrid, GridToolbar, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton, gridStringOrNumberComparator } from '@mui/x-data-grid';
-import { Cancel, CheckCircle, Delete, EmojiEmotions, Gavel, Report, ReportGmailerrorred, SentimentVeryDissatisfied, ThumbDown, ThumbDownAlt, ThumbDownOffAlt, ThumbUp, ThumbUpAlt, ThumbUpOffAlt } from '@mui/icons-material';
-import { canBidDC, canBidDD, canBidGD, canBidNC, canBidNS } from './msalService';
-import { MaterialReactTable,useMaterialReactTable } from 'material-react-table';
-import { data } from './Data';
-import { useMemo, useState, useEffect, useRef } from 'react';
+// import { Alert, Box, IconButton, Paper, Snackbar, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
+// import * as React from 'react';
+// import axios from 'axios';
+// import api, { cancelBidDc, cancelBidDd, cancelBidGd, cancelBidNc, cancelBidNs, getcompletedauctions, getscheduledauctions, schedulebiddcsingle, schedulebiddynasingle, schedulebidgdsingle, schedulebidncsingle, schedulebidnssingle } from './api';
+// import { DataGrid, GridToolbar, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton, gridStringOrNumberComparator } from '@mui/x-data-grid';
+// import { Cancel, CheckCircle, Delete, EmojiEmotions, Gavel, Report, ReportGmailerrorred, SentimentVeryDissatisfied, ThumbDown, ThumbDownAlt, ThumbDownOffAlt, ThumbUp, ThumbUpAlt, ThumbUpOffAlt } from '@mui/icons-material';
+// import { canBidDC, canBidDD, canBidGD, canBidNC, canBidNS } from './msalService';
+// import { MaterialReactTable,useMaterialReactTable } from 'material-react-table';
+// import { data } from './Data';
+// import { useMemo, useState, useEffect, useRef } from 'react';
 
 
 // export default function ScheduledTable() {
@@ -299,12 +299,23 @@ import { useMemo, useState, useEffect, useRef } from 'react';
 //             </Stack></Box>)}
 
 
+import { Alert, Box, IconButton, Snackbar, Stack, TextField, Typography } from '@mui/material';
+import * as React from 'react';
+import { useMemo, useState, useEffect, useRef } from 'react';
+import { Cancel, CheckCircle, Delete, Gavel } from '@mui/icons-material';
+import { MaterialReactTable, useMaterialReactTable } from 'material-react-table';
+import { canBidDC, canBidDD, canBidGD, canBidNC, canBidNS } from './msalService';
+import { getscheduledauctions, schedulebiddynasingle, schedulebiddcsingle, schedulebidgdsingle, schedulebidncsingle, schedulebidnssingle, cancelBidDd, cancelBidDc, cancelBidGd, cancelBidNc, cancelBidNs } from './api';
+
 export default function ScheduledTable() {
   const columns = useMemo(() => [
     { accessorKey: 'platform', header: 'Platform', size: 100 },
     { accessorKey: 'domain', header: 'Domain', size: 210 },
     { accessorKey: 'type', header: 'Type', size: 50, 
-      Cell: ({ cell }) => cell.getValue().charAt(0).toUpperCase() === 'E' ? 'E' : 'O' 
+      Cell: ({ cell }) => {
+        const value = cell.getValue();
+        return value && value.charAt(0).toUpperCase() === 'E' ? 'E' : 'O';
+      }
     },
     { accessorKey: 'status', header: 'Status', size: 70, 
       Cell: ({ cell }) => cell.getValue() === 'Outbid' ? <Cancel sx={{ color: 'red' }} /> : <CheckCircle sx={{ color: 'green' }} /> 
@@ -351,10 +362,6 @@ export default function ScheduledTable() {
       pagination: { pageSize: psize },
       sorting: [{ id: 'endTimeist', desc: true }],
     },
-    // state: {
-    //   pagination: { pageSize: psize },
-    // },
-    // onPaginationChange: ({ pageSize }) => setPsize(pageSize),
   });
 
   const MaxBid = (props) => {
@@ -535,4 +542,3 @@ export default function ScheduledTable() {
     </Box>
   );
 }
-

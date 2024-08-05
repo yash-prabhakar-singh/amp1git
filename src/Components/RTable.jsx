@@ -125,6 +125,9 @@ function RTable() {
       pagination: { pageSize: psize },
       sorting: [{ id: 'endTimeist', desc: true }],
     },
+    muiTablePaperProps:{
+      sx: { width: '100%' },
+    }
     // state: {
     //   pagination: { pageSize: psize },
     // },
@@ -142,9 +145,7 @@ function RTable() {
               <Box sx={{ minWidth: 910 }}>
                 <MaterialReactTable
                   table={table}
-                  muiTablePaperProps={{
-                    sx: { width: '100%' },
-                  }}
+                  
                 />
               </Box>
             </Box>

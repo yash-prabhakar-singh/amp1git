@@ -28,8 +28,6 @@ export default function BiddingList() {
 
   let [rows,setRows]= React.useState([]);
 
- 
-
   const theme = createTheme({
     palette: {
       primary: {

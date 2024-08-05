@@ -417,22 +417,12 @@ import { MaterialReactTable,useMaterialReactTable } from 'material-react-table';
         pagination: { pageSize: psize },
         sorting: [{ id: 'endTimeist', desc: true }],
       },
-      muiTableBodyCellProps: {
-        sx: {
-          '&:nth-of-type(odd)': {
-            backgroundColor: theme.palette.action.hover,
-          },
-        },
+      muiTablePaperProps:{
+        sx: { width: '100%' },
       },
       muiTableHeadCellProps: {
         sx: {
-          // backgroundColor: theme.palette.primary.main,
           color: theme.palette.common.grey,
-        },
-      },
-      muiTableContainerProps: {
-        sx: {
-          maxHeight: 500,
         },
       },
       muiTablePaginationProps: {
@@ -479,48 +469,10 @@ import { MaterialReactTable,useMaterialReactTable } from 'material-react-table';
                   <Delete fontSize='small' />
                 </IconButton>
               )}
-                      </Stack>
+            </Stack>
           <Box sx={{ width: '100%' }}>
             <MaterialReactTable
               table={table}
-              muiTablePaperProps={{
-                sx: { width: '100%' },
-              }}
-              muiTableBodyCellProps={{
-                sx: {
-                  '&:nth-of-type(odd)': {
-                    backgroundColor: theme.palette.action.hover,
-                  },
-                },
-              }}
-              muiTableHeadCellProps={{
-                sx: {
-                  backgroundColor: theme.palette.primary.main,
-                  color: theme.palette.common.white,
-                },
-              }}
-              muiTableContainerProps={{
-                sx: {
-                  maxHeight: 500,
-                },
-              }}
-              
-              muiTablePaginationProps={{
-                rowsPerPageOptions: [10, 25, 50, 100, 500],
-                onPageSizeChange: (newPageSize) => setPsize(newPageSize),
-              }}
-              muiTableBodyRowProps={({ row }) => ({
-                onClick: row.getToggleSelectedHandler(),
-                sx: { cursor: 'pointer' },
-              })}
-              muiSelectCheckboxProps={{
-                icon: <StarBorderIcon />,
-                checkedIcon: <StarIcon />,
-              }}
-              muiTableHeadCellCheckboxProps={{
-                icon: <StarBorderIcon />,
-                checkedIcon: <StarIcon />,
-              }}
             />
           </Box>
         </Stack>
