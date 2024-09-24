@@ -260,7 +260,7 @@ for(let i=0;i<arr.length;i++)
     if (arr.includes(appRoles.Admin))
     return true;
 }
-return false;
+return false || canDeveloper();
 }
 
 export function canDeveloper()

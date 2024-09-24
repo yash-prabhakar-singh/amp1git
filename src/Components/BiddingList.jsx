@@ -23,7 +23,6 @@ import PlacedTable from './PlacedTable';
 //import { TabContext, TabList, TabPanel } from '@mui/lab';
 
 
-
 export default function BiddingList() {
 
   let [rows,setRows]= React.useState([]);

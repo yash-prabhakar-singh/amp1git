@@ -64,6 +64,7 @@ import GDLiveM from './MobileComponent/GDLiveM';
 import AlgoSettings from './Components/AlgoSettings';
 import { SampleUI } from './Components/SampleFigma';
 import PreferencesNew from './Components/PreferencesNew';
+import CloseoutsReportWithFilter from './Components/CloseOutReportWithFilter';
 
 
 function App() {
@@ -99,6 +100,7 @@ function App() {
           <Route path="biddinglist" element={<RouteGuard roles={[appRoles.Bid_GD,appRoles.Bid_DD,appRoles.Bid_DC,appRoles.Bid_NS,appRoles.Bid_NC,appRoles.Watch,appRoles.Watch_GD,appRoles.Developer]}><BiddingList/></RouteGuard>}/>
           <Route path="closeouts/closeoutlist" element={<RouteGuard roles={[appRoles.CloseOut,appRoles.Developer]}><CloseoutList/></RouteGuard>}/>
           <Route path="closeouts/report" element={<RouteGuard roles={[appRoles.Reports,appRoles.Developer]}><CloseoutsReport/></RouteGuard>}/>
+          <Route path="closeouts/reportwithfilter" element={<RouteGuard roles={[appRoles.Reports,appRoles.Developer]}><CloseoutsReportWithFilter/></RouteGuard>}/>
           <Route path="closeouts/watchlist" element={<RouteGuard roles={[appRoles.CloseOut,appRoles.Developer]}><Watchlistcloseouts/></RouteGuard>}/>
      <Route path="auctionsreport" element={<RouteGuard roles={[appRoles.Reports,appRoles.Developer]}><AuctionsReport/></RouteGuard>}/>
      <Route path="sample" element={<RouteGuard roles={[appRoles.Sample,appRoles.Developer]}><Ssubmit/></RouteGuard>}/>
