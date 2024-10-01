@@ -21,7 +21,7 @@ import DTable from './ScheduledTable';
 import RTable from './RTable';
 import { useEffect } from 'react';
 import  { getnotifs, getnotifsnew } from './api';
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+// import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -128,7 +128,7 @@ else
     />
   
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DemoContainer    components={['DatePicker','DatePicker']}>
+      {/* <DemoContainer    components={['DatePicker','DatePicker']}> */}
       <DesktopDatePicker 
         slotProps={{ textField: { size: 'small' } }}
         sx={{
@@ -151,7 +151,7 @@ else
             newValue=newValue.set('h',updatedDate.getHours());
             newValue=newValue.set('m',updatedDate.getMinutes());setDate1(newValue);}}
         />
-         </DemoContainer>
+         {/* </DemoContainer> */}
     </LocalizationProvider>
     <Tooltip title={imp?"Important":"All"}>
         <FormControlLabel sx={{marginLeft:2,marginRight:0}} control={<Switch

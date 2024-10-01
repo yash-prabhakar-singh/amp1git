@@ -27,7 +27,7 @@ function axiosClient()
 const axiosInstance = axios.create({
     baseURL://'https://amp-backend--d76ywfl.wittyground-fa4ba52b.eastus2.azurecontainerapps.io',
     //'https://api.auctionhacker.com', //
-    'http://localhost:88',
+    'https://api.auctionhacker.com',
    responseType: "json",
    headers: { 
      accept: "application/json",

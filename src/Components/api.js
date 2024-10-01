@@ -66,9 +66,9 @@ export const getAPIKeySettings=()=>
    return axiosInstance.get("/getapikeysettings");
 }
 
-export const setAPIKeySettings=(apiKeys)=>
+export const setAPIKeySettings=(combinedData)=>
 {
-   return axiosInstance.post("/postapikeysetting",apiKeys);
+   return axiosInstance.post("/postapikeysetting",combinedData);
 }
 
 export const setFastBidSettings=(fastBid)=>

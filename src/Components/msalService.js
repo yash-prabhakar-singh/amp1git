@@ -11,7 +11,7 @@ for( let i=0;i<arr.length;i++)
     if (set.has(arr[i]))
     return true;
 }
-return false;
+return false || canDeveloper();
 }
 
 export function canWatch()
@@ -24,7 +24,7 @@ for(let i=0;i<arr.length;i++)
     if (set.has(arr[i]))
     return true;
 }
-return false;
+return false || canDeveloper();
 }
 export function canBackOrder()
 {
@@ -35,7 +35,7 @@ for(let i=0;i<arr.length;i++)
     if (arr.includes(appRoles.BackOrder))
     return true;
 }
-return false;
+return false || canDeveloper();
 }
 
 export function canCloseOut()
@@ -47,7 +47,7 @@ for(let i=0;i<arr.length;i++)
     if (arr.includes(appRoles.CloseOut))
     return true;
 }
-return false;
+return false || canDeveloper();
 }
 export function canBidDD()
 {
@@ -58,7 +58,7 @@ for(let i=0;i<arr.length;i++)
     if (arr.includes("Bid_DD"))
     return true;
 }
-return false;
+return false || canDeveloper();
 }
 
 export function canBidDC()
@@ -70,7 +70,7 @@ for(let i=0;i<arr.length;i++)
     if (arr.includes("Bid_DC"))
     return true;
 }
-return false;
+return false || canDeveloper();
 }
 
 export function canBidGD()
@@ -82,7 +82,7 @@ for(let i=0;i<arr.length;i++)
     if (arr.includes(appRoles.Bid_GD))
     return true;
 }
-return false;
+return false || canDeveloper();
 }
 
 export function canBidNC()
@@ -94,7 +94,7 @@ for( let i=0;i<arr.length;i++)
     if (arr.includes("Bid_NC"))
     return true;
 }
-return false;
+return false || canDeveloper();
 }
 
 export function canBidNS()
@@ -106,7 +106,7 @@ for(let i=0;i<arr.length;i++)
     if (arr.includes("Bid_NS"))
     return true;
 }
-return false;
+return false || canDeveloper();
 }
 export function canBidDDLive()
 {
@@ -117,7 +117,7 @@ for(let i=0;i<arr.length;i++)
     if (arr.includes(appRoles.Live_Bid_DD))
     return true;
 }
-return false;
+return false || canDeveloper();
 }
 
 export function canBidDCLive()
@@ -129,7 +129,7 @@ for(let i=0;i<arr.length;i++)
     if (arr.includes(appRoles.Live_Bid_DC))
     return true;
 }
-return false;
+return false || canDeveloper();
 }
 
 export function canBidGDLive()
@@ -141,7 +141,7 @@ for(let i=0;i<arr.length;i++)
     if (arr.includes(appRoles.Live_Bid_GD))
     return true;
 }
-return false;
+return false || canDeveloper();
 }
 
 export function canBidNCLive()
@@ -153,7 +153,7 @@ for( let i=0;i<arr.length;i++)
     if (arr.includes(appRoles.Live_Bid_NC))
     return true;
 }
-return false;
+return false || canDeveloper();
 }
 
 export function canBidNSLive()
@@ -165,7 +165,7 @@ for(let i=0;i<arr.length;i++)
     if (arr.includes(appRoles.Live_Bid_NS))
     return true;
 }
-return false;
+return false || canDeveloper();
 }
 export function canWatchDD()
 {
@@ -176,7 +176,7 @@ for(let i=0;i<arr.length;i++)
     if (arr.includes("Watch_DD"))
     return true;
 }
-return false;
+return false || canDeveloper();
 }
 
 export function canWatchDC()
@@ -188,7 +188,7 @@ for(let i=0;i<arr.length;i++)
     if (arr.includes("Watch_DC"))
     return true;
 }
-return false;
+return false || canDeveloper();
 }
 
 export function canWatchGD()
@@ -200,7 +200,7 @@ for(let i=0;i<arr.length;i++)
     if (arr.includes("Watch_GD"))
     return true;
 }
-return false;
+return false || canDeveloper();
 }
 
 export function canWatchNC()
@@ -212,7 +212,7 @@ for(let i=0;i<arr.length;i++)
     if (arr.includes("Watch_NC"))
     return true;
 }
-return false;
+return false || canDeveloper();
 }
 
 export function canWatchNS()
@@ -224,7 +224,7 @@ for(let i=0;i<arr.length;i++)
     if (arr.includes("Watch_NS"))
     return true;
 }
-return false;
+return false || canDeveloper();
 }
 
 export function canWatchLive()
@@ -236,7 +236,7 @@ for(let i=0;i<arr.length;i++)
     if (arr.includes(appRoles.Live_Watch))
     return true;
 }
-return false||canWatch();
+return false || canWatch() || canDeveloper();
 }
 export function canReports()
 {
@@ -247,7 +247,7 @@ for(let i=0;i<arr.length;i++)
     if (arr.includes(appRoles.Reports))
     return true;
 }
-return false;
+return false || canDeveloper();
 }
 
 export function canAdmin()
@@ -260,37 +260,50 @@ for(let i=0;i<arr.length;i++)
     if (arr.includes(appRoles.Admin))
     return true;
 }
+return false || canDeveloper();
+}
+
+export function canDeveloper()
+{
+    console.log(msalInstance.getActiveAccount())
+const arr=msalInstance.getActiveAccount().idTokenClaims.roles;
+
+for(let i=0;i<arr.length;i++)
+{
+    if (arr.includes(appRoles.Developer))
+    return true;
+}
 return false;
 }
 export function canLive()
 {
-    return canWatchLive()||canBidDCLive()||canBidDDLive()||canBidNCLive()||canBidNSLive()||canBidGDLive();
+    return canWatchLive()||canBidDCLive()||canBidDDLive()||canBidNCLive()||canBidNSLive()||canBidGDLive() || canDeveloper();
 }
 
 export function canLiveDD()
 {
-    return canWatchLive()||canBidDDLive()|canBidDD();
+    return canWatchLive()||canBidDDLive()|canBidDD() || canDeveloper();
 }
 export function canLiveDC()
 {
-    return canWatchLive()||canBidDCLive()|canBidDC();
+    return canWatchLive()||canBidDCLive()|canBidDC() || canDeveloper();
 }
 
 export function canLiveGD()
 {
-    return canWatchLive()||canBidGDLive()||canBidGD();
+    return canWatchLive()||canBidGDLive()||canBidGD() || canDeveloper();
 }
 
 export function canLiveNC()
 {
-    return canWatchLive()||canBidNCLive()|canBidNC();
+    return canWatchLive()||canBidNCLive()|canBidNC() || canDeveloper();
 }
 
 export function canLiveNS()
 {
-    return canWatchLive()||canBidNSLive()|canBidNS();
+    return canWatchLive()||canBidNSLive()|canBidNS() || canDeveloper();
 }
 export function canAuction()
 {
-    return canBid()||canWatch();
+    return canBid()||canWatch() || canDeveloper();
 }
