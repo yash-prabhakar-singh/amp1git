@@ -275,6 +275,8 @@ for(let i=0;i<arr.length;i++)
 }
 return false;
 }
+
+
 export function canLive()
 {
     return canWatchLive()||canBidDCLive()||canBidDDLive()||canBidNCLive()||canBidNSLive()||canBidGDLive() || canDeveloper();

@@ -19,23 +19,24 @@ const initializeMsal = async () => {
 
 };
 
-initializeMsal();
+// initializeMsal();
 
 
 
-const accounts = msalInstance.getAllAccounts();
-if (accounts.length == 1) {
-  const account = accounts[0];
-  if (account?.tenantId === msalConfig.auth.tenantId) {
-    msalInstance.setActiveAccount(account);
-  }
-} else if (accounts.length > 1) {
-  accounts.forEach((account) => {
-    if (account?.tenantId === msalConfig.auth.tenantId) {
-      msalInstance.setActiveAccount(account);
-    }
-  });
-}
+// const accounts = msalInstance.getAllAccounts();
+// if (accounts.length == 1) {
+//   const account = accounts[0];
+//   if (account?.tenantId === msalConfig.auth.tenantId) {
+//     msalInstance.setActiveAccount(account);
+//   }
+// } else if (accounts.length > 1) {
+//   accounts.forEach((account) => {
+//     if (account?.tenantId === msalConfig.auth.tenantId) {
+//       msalInstance.setActiveAccount(account);
+//     }
+//   });
+// }
+
 function loginRedirect() {
   try {
     const loginRequest = {
@@ -58,6 +59,23 @@ function loginPopup() {
   }
 }
 
+initializeMsal().then(async ()=>{ 
+  const accounts = msalInstance.getAllAccounts();
+if (accounts.length == 1) {
+  const account = accounts[0];
+  if (account?.tenantId === msalConfig.auth.tenantId) {
+    msalInstance.setActiveAccount(account);
+  }
+} else if (accounts.length > 1) {
+  accounts.forEach((account) => {
+    if (account?.tenantId === msalConfig.auth.tenantId) {
+      msalInstance.setActiveAccount(account);
+    }
+  });
+}
+
+
+
 msalInstance.addEventCallback((event) => {
   if (event.eventType === EventType.LOGIN_SUCCESS && event.payload) {
     const payload = event.payload;
@@ -79,7 +97,7 @@ msalInstance.addEventCallback((event) => {
     console.log("Callback finished");
   }
 });
-msalInstance
+await msalInstance
   .handleRedirectPromise()
   .then((tokenResponse) => {
     if (window.location.pathname.startsWith(protectedResources.Api.path)||window.location.pathname.startsWith(protectedResources.Api.path1)
@@ -90,6 +108,7 @@ msalInstance
       if (!account) {
         loginRedirect();
       }
+      console.log(account)
 
       if(tokenResponse)
       {  
@@ -115,3 +134,4 @@ root.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
+}).catch((err)=>{console.log(err);})

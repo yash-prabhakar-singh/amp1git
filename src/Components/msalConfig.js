@@ -20,7 +20,7 @@ const msalConfig = {
           loggerCallback(logLevel, message) {
             console.log(message);
           },
-        },
+        }, 
       },
       cache: {
         cacheLocation: 'localStorage',
@@ -31,7 +31,6 @@ const msalConfig = {
   interactionType: 'redirect',
   system: {
     loggerOptions: {
-      
       loggerCallback: (level, message, containsPii) => {
         if (containsPii) {
           return;

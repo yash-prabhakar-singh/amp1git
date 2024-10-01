@@ -4,9 +4,9 @@ import React, { useState } from "react";
 //import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 //import Typography from "@material-ui/core/Typography";
 //import { makeStyles } from "@material-ui/core/styles";
-import { Formik, Form, Field } from "formik"
+//import { Formik, Form, Field } from "formik"
 import * as Yup from "yup"
-import { TextField } from "formik-mui"
+//import { TextField } from "formik-mui"
 //import AuthService from "../../AuthService";
 import { useNavigate } from "react-router-dom";
 import { Avatar, Box, Button, Checkbox, createTheme, CssBaseline, FormControlLabel, Link, Stack, ThemeProvider, Typography } from "@mui/material";
@@ -155,7 +155,7 @@ const [password, setPassword]= useState("");
     <ThemeProvider theme={theme}>
       <Box>
 <CssBaseline />
-    <Box height='100vh'>
+   {/* { <Box height='100vh'>
       
       
         <Stack direction='row' spacing={10} justifyContent='center'paddingTop={5}>
@@ -248,7 +248,7 @@ const [password, setPassword]= useState("");
             </Formik>
             </Stack>
             </Stack>
-    </Box>
+    </Box>} */}
     </Box>
     </ThemeProvider>
   );
