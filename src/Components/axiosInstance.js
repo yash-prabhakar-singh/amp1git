@@ -27,7 +27,7 @@ function axiosClient()
 const axiosInstance = axios.create({
     baseURL://'https://amp-backend--d76ywfl.wittyground-fa4ba52b.eastus2.azurecontainerapps.io',
     //'https://api.auctionhacker.com', //
-    'https://api.auctionhacker.com',
+    'http://localhost:88',
    responseType: "json",
    headers: { 
      accept: "application/json",
@@ -35,7 +35,6 @@ const axiosInstance = axios.create({
    },          
    timeout: 1000 * 60,
  });
- 
  
  // Interceptor to add access token to every request
  axiosInstance.interceptors.request.use(async (config) => {//console.log("abc")

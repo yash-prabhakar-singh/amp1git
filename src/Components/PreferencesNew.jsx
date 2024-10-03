@@ -68,17 +68,31 @@ const PreferencesNew = () => {
 
   const handleTimeChange = (name, timeType, newValue) => {
     const timeString = newValue ? newValue.toLocaleTimeString('en-GB', { hour12: false }) : null;
+    console.log(`Updating ${timeType} for ${name} to ${timeString}`);
+    
+
     setLiveTimings((prev) => {
+      console.log("Previous state:", prev);
       const newLiveTimings = [...prev];
       const index = platform.get(name);
+      console.log("Index for", name, ":", index);
+      
       if (index !== -1) {
-        newLiveTimings[index] = { ...newLiveTimings[index], [timeType]: timeString };
+        console.log("Before update:", newLiveTimings[index]);
+        const updatedItem = { ...newLiveTimings[index], [timeType]: timeString };
+        console.log("After update:", updatedItem);
+        newLiveTimings[index] = updatedItem;
+        console.log("newLiveTimings[index]: ", newLiveTimings[index]);
       }
+      
+      console.log('Updated liveTimings:', newLiveTimings);
       return newLiveTimings;
     });
+    
     setChanges(true);
   };
 
+  
   useEffect(() => {
     getFastBidSettings()
       .then((response) => {
@@ -90,37 +104,21 @@ const PreferencesNew = () => {
         });
         console.log("map", map);
         setPlatform(map);
-      //   setLiveTimings(response.data.map((item) => {
-      //     console.log('startTime:',new Date(item.startTime), 'endTime:', new Date(item.endTime)); // Log the startTime and endTime
-      //     const startTime = item.startTime ? new Date(item.startTime) : null;
-      //     const endTime = item.endTime ? new Date(item.endTime) : null;
-      //     return {
-      //       platform: item.platform,
-      //       startTime: startTime && !isNaN(startTime) ? startTime.toLocaleTimeString('en-GB', { hour12: false }) : null,
-      //       endTime: endTime && !isNaN(endTime) ? endTime.toLocaleTimeString('en-GB', { hour12: false }) : null,
-      //     };
-      //   }));
-      //   setChanges(false);
-      // })
-      // .catch((error) => {
-      //   console.log(error);
-      // });
+     
 
-      setLiveTimings(response.data.map((item) => {
-        console.log('startTime:', item.startTime, 'endTime:', item.endTime); // Log the startTime and endTime
-        const startTime = item.startTime ? new Date(item.startTime) : null;
-        const endTime = item.endTime ? new Date(item.endTime) : null;
-        return {
-          platform: item.platform,
-          startTime: startTime && !isNaN(startTime) ? startTime.toLocaleTimeString('en-GB', { hour12: false }) : null,
-          endTime: endTime && !isNaN(endTime) ? endTime.toLocaleTimeString('en-GB', { hour12: false }) : null,
-        };
-      }));
-      setChanges(false);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+        setLiveTimings(response.data.map((item) => {
+          console.log('Processing item:', item);
+          return {
+            platform: item.platform,
+            startTime: item.startTime || null,
+            stopTime: item.stopTime || null,
+          };
+        }));
+        console.log("Initialized liveTimings:", liveTimings);
+      })
+      .catch((error) => {
+        console.log("Error fetching settings:", error);
+      });
       
   }, []);
 
@@ -129,11 +127,21 @@ const PreferencesNew = () => {
   }, [liveTimings]);
 
   const handleSave = () => {
+    const combinedData = fastBid.map(item => {
+      const timings = liveTimings.find(timing => timing.platform === item.platform);
+      return {
+        ...item,
+        startTime: timings?.startTime || null,
+        stopTime: timings?.stopTime || null
+      };
+    });
+    
     const dataToSend = {
-      fastBid,
-      liveTimings,
-    };
-    setFastBidSettings(dataToSend)
+      fastBid:combinedData
+      
+    }
+    console.log("dataToSend", dataToSend.fastBid);
+    setFastBidSettings(dataToSend.fastBid)
       .then(() => {
         setOpen(true);
         setChanges(false);
@@ -143,6 +151,7 @@ const PreferencesNew = () => {
         setOpen1(true);
       });
   };
+
 
   return (
     <Stack direction='column' spacing={4} marginBottom={15}>
@@ -316,6 +325,7 @@ const PreferencesNew = () => {
               <Grid container rowSpacing={3} justifyContent='space-between'>
                 {platform &&
                   Array.from(platform.keys()).map((platformName) => {
+                    const timings = liveTimings.find(t => t.platform === platformName) || {};
                     return (
                       <Grid
                         item
@@ -326,14 +336,14 @@ const PreferencesNew = () => {
                         <Typography variant='body1'>{platformName}:</Typography>
                         <TimePicker
                           label='Start Time'
-                          value={liveTimings[platform.get(platformName)]?.startTime ? new Date(`1970-01-01T${liveTimings[platform.get(platformName)]?.startTime}`) : null}
+                          value={timings.startTime ? new Date(`1970-01-01T${timings.startTime}`) : null}
                           onChange={(newValue) => handleTimeChange(platformName, 'startTime', newValue)}
                           renderInput={(params) => <TextField {...params} size='small' sx={{ width: 150 }} />}
                         />
                         <TimePicker
                           label='End Time'
-                          value={liveTimings[platform.get(platformName)]?.endTime ? new Date(`1970-01-01T${liveTimings[platform.get(platformName)]?.endTime}`) : null}
-                          onChange={(newValue) => handleTimeChange(platformName, 'endTime', newValue)}
+                          value={timings.stopTime ? new Date(`1970-01-01T${timings.stopTime}`) : null}
+                          onChange={(newValue) => handleTimeChange(platformName, 'stopTime', newValue)}
                           renderInput={(params) => <TextField {...params} size='small' sx={{ width: 150 }} />}
                         />
                       </Grid>
