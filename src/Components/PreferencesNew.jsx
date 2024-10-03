@@ -329,9 +329,10 @@ const PreferencesNew = () => {
                     return (
                       <Grid
                         item
-                        xs={6}
+                        xs={8}
                         md={3.5}
                         sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+                        
                       >
                         <Typography variant='body1'>{platformName}:</Typography>
                         <TimePicker
