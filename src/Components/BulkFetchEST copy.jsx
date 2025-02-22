@@ -176,7 +176,9 @@ export default function Bulkfest1() {
         disabled={loading}
       onClick={()=>{
             setLoading(true);
-            var arr= value.replace(/\s/g,"").split("\n")
+            //var arr= value.replace(/\s/g,"").split("\n")
+            var arr = value.replace(/[^\S\n]+/g, "").split("\n").filter(Boolean);
+
             var s="";
             //var a= arr.map((ar)=> {return ar.split(',')});
             setFdets([]);
