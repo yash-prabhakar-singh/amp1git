@@ -2,6 +2,8 @@ import axios, { Axios } from "axios";
 import msalConfig, { appRoles, protectedResources } from "./msalConfig";
 import { msalInstance } from "..";
 
+const API_URL=process.env.REACT_APP_API_URL;
+
 async function getToken() 
  {
    const currentAccount = msalInstance.getActiveAccount();
@@ -25,9 +27,8 @@ function axiosClient()
 {        
 
 const axiosInstance = axios.create({
-    baseURL://'https://amp-backend--d76ywfl.wittyground-fa4ba52b.eastus2.azurecontainerapps.io',
-    //'https://api.auctionhacker.com', //
-    'http://localhost:88',
+    baseURL: API_URL,
+   // 'http://localhost:88',
    responseType: "json",
    headers: { 
      accept: "application/json",
