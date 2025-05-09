@@ -27,11 +27,11 @@ export default function ScheduledTable() {
     { accessorKey: 'gdv', header: 'GDV', size: 90 },
     { accessorKey: 'currbid', header: 'Current Bid', size: 95 },
     { accessorKey: 'time_left', header: 'Time Left', size: 120, 
-      Cell: ({ cell }) => cell.getValue().timeleft, 
+      Cell: ({ cell }) => cell.getValue(), 
       sortingFn: (rowA, rowB) => new Date(rowA.original.endTimeist) - new Date(rowB.original.endTimeist)
     },
-    { accessorKey: 'maxbid', header: 'Our Max Bid', size: 220, 
-      Cell: ({ cell }) => <MaxBid {...cell.row.original} /> 
+    { accessorKey: 'bidAmount', header: 'Our Max Bid', size: 120, 
+      //Cell: ({ cell }) => <MaxBid {...cell.row.original} /> 
     },
     { accessorKey: 'extensions_taken', header: 'Extns', size: 50 },
     { accessorKey: 'keyword_exact_lsv', header: 'LSV', size: 60 },
@@ -296,6 +296,49 @@ export default function ScheduledTable() {
     const disabled = () => {
       if (!disabledc()) { if (mb > props.currbid) return false; else return true; }
       else return true;
+    }
+
+    const MaxBid = (props) => {
+      const [mb, setMb] = useState(props.bidAmount);
+      const handleChange = (event) => {
+        setMb(event.target.value);
+      };
+      const disabledc = () => {
+        if ((props.platform === "Dynadot" && canBidDD()) || (props.platform === "Dropcatch" && canBidDC()) ||
+          (props.platform === "Namecheap" && canBidNC()) || (props.platform === "GoDaddy" && canBidGD()) ||
+          (props.platform === "Namesilo" && canBidNS())) { return false; }
+        else return true;
+      }
+      const disabled = () => {
+        if (!disabledc()) { if (mb > props.currbid) return false; else return true; }
+        else return true;
+      }
+  
+      return (
+        <Stack direction="row" spacing={1} alignItems="center">
+          <TextField
+            size="small"
+            value={mb || ''}
+            onChange={handleChange}
+            variant="outlined"
+            sx={{ width: '100px' }}
+          />
+          <IconButton 
+            color="primary" 
+            disabled={disabled()} 
+            size="small"
+          >
+            <Gavel />
+          </IconButton>
+          <IconButton 
+            color="error" 
+            disabled={disabledc()} 
+            size="small"
+          >
+            <Delete />
+          </IconButton>
+        </Stack>
+      );
     }
   }
 
